@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Binary File Upload</title>
+</head>
+<body>
+    <h1>Test Binary File Upload</h1>
+    
+    <div>
+        <h2>Method 1: File Upload (Multipart)</h2>
+        <input type="file" id="fileInput1" accept=".xlsx,.xls">
+        <button onclick="uploadFile1()">Upload File (Multipart)</button>
+    </div>
+    
+    <div>
+        <h2>Method 2: Binary Data (Base64)</h2>
+        <input type="file" id="fileInput2" accept=".xlsx,.xls">
+        <button onclick="uploadFile2()">Upload File (Base64)</button>
+    </div>
+    
+    <div>
+        <h2>Method 3: Raw Binary Data</h2>
+        <input type="file" id="fileInput3" accept=".xlsx,.xls">
+        <button onclick="uploadFile3()">Upload File (Raw Binary)</button>
+    </div>
+    
+    <div id="result"></div>
+
+    <script>
+        function uploadFile1() {
+            const fileInput = document.getElementById('fileInput1');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Please select a file');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/api-test-binary-file-log', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            })
+            .catch(error => {
+                document.getElementById('result').innerHTML = '<pre>Error: ' + error.message + '</pre>';
+            });
+        }
+
+        function uploadFile2() {
+            const fileInput = document.getElementById('fileInput2');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Please select a file');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Data = e.target.result.split(',')[1]; // Remove data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64, prefix
+                
+                const data = {
+                    file: base64Data,
+                    filename: file.name
+                };
+
+                fetch('/api-test-binary-file-log', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                })
+                .catch(error => {
+                    document.getElementById('result').innerHTML = '<pre>Error: ' + error.message + '</pre>';
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function uploadFile3() {
+            const fileInput = document.getElementById('fileInput3');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Please select a file');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const binaryData = e.target.result;
+                
+                fetch('/api-test-binary-file-log', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/octet-stream',
+                    },
+                    body: binaryData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                })
+                .catch(error => {
+                    document.getElementById('result').innerHTML = '<pre>Error: ' + error.message + '</pre>';
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        }
+    </script>
+</body>
+</html> 

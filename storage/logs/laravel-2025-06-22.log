@@ -1,0 +1,14 @@
+[2025-06-22 23:31:12] local.DEBUG: params login:  
+[2025-06-22 23:31:12] local.WARNING: {"username":"\u00e1dasd","password":"sdfsd","captcha":"","captcha_token":"","ipAddress":null,"userAgent":"Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/137.0.0.0 Safari\/537.36"}  
+[2025-06-22 23:31:12] local.WARNING: "https:\/\/ioc-api.csdl.edu.vn\/csdlgd-user\/auth\/login"  
+[2025-06-22 23:31:12] local.INFO: Post data : https://ioc-api.csdl.edu.vn/csdlgd-user/auth/login data: {
+    "username": "\u00e1dasd",
+    "password": "sdfsd",
+    "captcha": "",
+    "captcha_token": "",
+    "ipAddress": null,
+    "userAgent": "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/137.0.0.0 Safari\/537.36"
+}  
+[2025-06-22 23:31:12] local.DEBUG: Kết quả đăng nhập:  
+[2025-06-22 23:31:12] local.INFO: {"rc":3,"rd":"Sai t\u00ean t\u00e0i kho\u1ea3n ho\u1eb7c m\u1eadt kh\u1ea9u","token":null,"ssoAccessToken":null,"role":0,"province":null,"district":null,"ssoDienBien":false,"listBaoCaoChoBo":null,"listBaoCaoChoSo":null,"code":0,"message":null,"username":null,"needChangePassword":false,"failCount":null,"domain":null,"jobPosition":null,"capHocList":[],"parentRole":null,"baseRole":null,"otherPermisisons":null,"timeoutUser":null,"passwordOutdated":false,"display_name":null,"ma_don_vi":null,"ma_so":null,"ma_phong":null,"ma_truong_hoc":null,"permission":null,"count_login_fail":0,"day_expired":0,"max_count":null,"sso":false}  
+[2025-06-22 23:31:12] local.INFO: ==>login respone code=3, msg=Sai tên tài khoản hoặc mật khẩu  

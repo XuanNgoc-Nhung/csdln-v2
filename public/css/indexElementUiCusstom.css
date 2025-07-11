@@ -1,0 +1,116 @@
+.dts-noty-success {
+    background: #C9FFE5;
+    color: #004638;
+}
+.el-table__empty-text{
+    color: #333333 !important;
+}
+.dts-noty-info {
+    background: #909399;
+}
+.el-message-box__title,.el-message-box__content{
+    color: #303133 !important;
+}
+
+.dts-noty-warning {
+    background: #e6a23c;
+}
+.el-table__empty-block{
+    max-height: 60px;
+}
+
+.dts-noty-error {
+    background: #f56c6c;
+}
+.dts-noty-error .el-icon-close:before{
+    color: white !important;
+}
+
+.el-message__content {
+    color: white !important;
+}
+
+.el-message .el-icon-error {
+    color: white !important;
+}
+
+.el-message .el-icon-success {
+    color: white !important;
+}
+
+.el-message .el-icon-warning {
+    color: white !important;
+}
+.showThongTinLoiImportSSO .el-dialog__body{
+    /* padding:0 20px !important; */
+}
+
+.el-message .el-icon-info {
+    color: white !important;
+}
+
+.mx-datepicker-popup {
+    z-index: 2025 !important;
+}
+.el-table .cell{
+    padding-right: 8px !important;
+    padding-left: 8px !important;
+    white-space: normal;
+    word-break: break-word !important;
+}
+.mx-datepicker {
+    width: 100% !important;
+}
+.dialog-lichSuChuyenDuLieu .el-dialog__body{
+    border: 1px solid rgb(167, 167, 167);
+    padding:0;
+    height: calc(100vh - 130px)
+}
+.dialog-ChiTietLichSuChuyenDuLieu .el-dialog__body{
+    border: 1px solid rgb(167, 167, 167);
+    padding:0;
+    height: calc(70vh - 130px)
+}
+.el-message-box{
+    z-index: 999999 !important;
+}
+.pd-t-0{
+    padding-top: 0;
+}
+.el-table__body, .el-table__footer, .el-table__header{
+
+}
+.el-tabs__item {
+    font-size: 16px !important;
+    font-weight: 500 !important;
+}
+.el-table th>.cell{
+    font-size: 15px;
+}
+.el-table th.is-leaf{
+    border-right: 1px solid #DDDDDD !important;
+}
+.el-table--enable-row-transition .el-table__body td{
+
+}
+.el-table{
+    color: #333333 !important;
+    border-color: #EBEEF5 !important;
+}
+.el-table thead,.el-table th.el-table__cell {
+    color: #333;
+    font-weight: 600;
+    /* background-color: #eee !important; */
+}
+::-webkit-input-placeholder {
+    font-style: normal !important;
+}
+:-moz-placeholder {
+    font-style: normal !important;
+}
+::-moz-placeholder {
+    font-style: normal !important;
+}
+:-ms-input-placeholder {
+    font-style: normal !important;
+}

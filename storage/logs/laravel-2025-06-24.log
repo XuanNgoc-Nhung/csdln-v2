@@ -1,0 +1,13 @@
+[2025-06-24 10:39:59] local.INFO: GET  
+[2025-06-24 10:40:13] local.INFO: ImportQuanHuyen  
+[2025-06-24 10:40:13] local.INFO: Request data: {"file":{}}  
+[2025-06-24 10:40:13] local.INFO: File found in request  
+[2025-06-24 10:40:13] local.INFO: File details - Name: blob, Path: /private/var/folders/tz/bkcw3g457v75w5scp3rtfzhm0000gn/T/phpbYJOdf, Size: 12510 bytes  
+[2025-06-24 10:40:13] local.INFO: Prepared file for upload: blob  
+[2025-06-24 10:40:13] local.INFO: Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZF90aGFpbmd1eWVuX2RlbW8iLCJpYXQiOjE3NDgyMjE4OTEsImV4cCI6MTc1MzQwNTg5MX0.UzN3PrvosAzGFWZ1VfyWSwExOOu3bBte3yNQZTEI3T8  
+[2025-06-24 10:40:13] local.INFO: API URI: https://apimoet.dtsgroup.com.vn/internal-api/dmQuanHuyen/import  
+[2025-06-24 10:40:13] local.INFO: Headers: {"token":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZF90aGFpbmd1eWVuX2RlbW8iLCJpYXQiOjE3NDgyMjE4OTEsImV4cCI6MTc1MzQwNTg5MX0.UzN3PrvosAzGFWZ1VfyWSwExOOu3bBte3yNQZTEI3T8"}  
+[2025-06-24 10:40:13] local.INFO: Data upload count: 1  
+[2025-06-24 10:40:13] local.INFO: Response status: 200  
+[2025-06-24 10:40:13] local.INFO: Response headers: {"Server":["nginx\/1.20.1"],"Date":["Tue, 24 Jun 2025 03:40:13 GMT"],"Content-Type":["application\/json;charset=UTF-8"],"Transfer-Encoding":["chunked"],"Connection":["keep-alive"],"vary":["accept-encoding"]}  
+[2025-06-24 10:40:13] local.INFO: Response body: {"message":"Import thành công 0 bản ghi. 1 bản ghi bị lỗi.","code":1,"statusResponse":0,"urlLoi":"/file/temporary/import-loi/loi-import_ba51ac48-76a5-4efd-9104-40132803944a.xlsx"}  

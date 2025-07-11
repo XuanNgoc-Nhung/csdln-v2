@@ -1,0 +1,184 @@
+{
+    "info": {
+        "_postman_id": "f53e95ff-ae22-4659-914b-39597d101b34",
+        "name": "OpenApi chung thu so",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "17576925"
+    },
+    "item": [
+        {
+            "name": "chứng thư số delete by ma Gv",
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n    \"maGVList\" : [\"0988\"]\r\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "http://103.226.251.36:55599/open-api/chung-thu-so/delete-by-magv",
+                    "protocol": "http",
+                    "host": [
+                        "103",
+                        "226",
+                        "251",
+                        "36"
+                    ],
+                    "port": "55599",
+                    "path": [
+                        "open-api",
+                        "chung-thu-so",
+                        "delete-by-magv"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "chứng thư số insert",
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n    \"maGiaoVien\" : \"GV00101\",\r\n    \"goiCuoc\" : \"test222\"\r\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "http://103.226.251.36:55599/open-api/chung-thu-so/insert-cts",
+                    "protocol": "http",
+                    "host": [
+                        "103",
+                        "226",
+                        "251",
+                        "36"
+                    ],
+                    "port": "55599",
+                    "path": [
+                        "open-api",
+                        "chung-thu-so",
+                        "insert-cts"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "chứng thư số import",
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "[\r\n    {\r\n        \"maGiaoVien\" : \"GV004\",\r\n        \"listGoiCuoc\" : [\"goi 1\", \"goi 2\"]\r\n    },\r\n    {\r\n        \"maGiaoVien\" : \"GV005\",\r\n        \"listGoiCuoc\" : [\"goi 1\", \"goi 5\"]\r\n    },\r\n    {\r\n        \"maGiaoVien\" : \"GV006\",\r\n        \"listGoiCuoc\" : [\"goi 1\", \"goi 2\", \"goi 3\"]\r\n    }\r\n]\r\n",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "http://103.226.251.36:55599/open-api/chung-thu-so/import-cts",
+                    "protocol": "http",
+                    "host": [
+                        "103",
+                        "226",
+                        "251",
+                        "36"
+                    ],
+                    "port": "55599",
+                    "path": [
+                        "open-api",
+                        "chung-thu-so",
+                        "import-cts"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "chứng thư số get by ma gv",
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": " ",
+                    "protocol": "http",
+                    "host": [
+                        "103",
+                        "226",
+                        "251",
+                        "36"
+                    ],
+                    "port": "55599",
+                    "path": [
+                        "open-api",
+                        "chung-thu-so",
+                        "get-by-magv"
+                    ],
+                    "query": [
+                        {
+                            "key": "maGiaoVien",
+                            "value": "GV006"
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "chứng thư số update by id",
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n    \"id\": 43,\r\n    \"maGiaoVien\": \"GV006\",\r\n    \"goiCuoc\": \"goi 1 testttttttttttt\"\r\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "http://103.226.251.36:55599/open-api/chung-thu-so/update-by-id",
+                    "protocol": "http",
+                    "host": [
+                        "103",
+                        "226",
+                        "251",
+                        "36"
+                    ],
+                    "port": "55599",
+                    "path": [
+                        "open-api",
+                        "chung-thu-so",
+                        "update-by-id"
+                    ]
+                }
+            },
+            "response": []
+        }
+    ]
+}

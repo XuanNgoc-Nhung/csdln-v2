@@ -1,0 +1,54 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="node_modules/excel2table/theme.css">
+    <title>Excel 2 Table</title>
+</head>
+<body>
+    <h3>Preview a XLSX file</h3>
+    <button type="button" value="" onclick="fetchAndConvert()">Preview</button>
+    <div class="content"></div>
+   
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="node_modules/excel2table/index.js"></script>
+    <script type="text/javascript">
+    function doConvert(input){
+        excel2table.render(".content", input.files[0], { scales:true })
+    };
+
+    function fetchAndConvert(){
+        var data = {
+            capHoc:1,
+            namHoc:2019,
+            collectionName:"BcSoLuongHocSinhTheoDoiTuong",
+            maDonVi:"625"
+        };
+
+        fetch("http://13.251.217.47:44462/csdlgd-report-api/download-excel", {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            // mode: 'cors', // no-cors, cors, *same-origin
+            // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            // credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                "X-ROLE-ID":"2",
+                "X-MA-DON-VI":"625",
+                "Content-Type": "application/json"
+            },
+            // redirect: 'follow', // manual, *follow, error
+            // referrer: 'no-referrer', // no-referrer, *client
+            body: JSON.stringify(data), // body data type must match "Content-Type" header
+        })
+        .then(res => res.blob()) // Gets the response and returns it as a blob
+        .then(blob => {
+          // Here's where you get access to the blob
+          // And you can use it for whatever you want
+          // Like calling ref().put(blob)
+          var file = new File([blob], blob);
+          excel2table.render(".content", file, { scales:true })
+        });
+    }
+    </script>
+</body>
+</html>
