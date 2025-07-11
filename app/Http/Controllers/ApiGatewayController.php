@@ -4,16 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Rest\HttpProcessorManager;
 use Illuminate\Http\Request;
-use LZCompressor\LZString;
 
 class ApiGatewayController extends BaseController
 {
     public function request(Request $request)
     {
-        $data = $request->get("data");
-        $data = LZString::decompressFromBase64($data);
         $path = $request->get("path");
         $method = $request->get("method");
+        $data = $request->get("data");
 
         $this->log_json("data = ", $data);
 
@@ -23,17 +21,11 @@ class ApiGatewayController extends BaseController
         }
         return null;
     }
-    
     public function request2(Request $request)
     {
         $path = $request->get("path");
         $method = $request->get("method");
         $data = $request->get("data");
-        
-        // Decompress data if it's compressed
-        if (!empty($data)) {
-            $data = LZString::decompressFromBase64($data);
-        }
 
         $this->log_json("data = ", $data);
 

@@ -571,6 +571,7 @@
                 });
                 rest_api.get("/internal-api/dmTinhThanh/filter", params, (data) => {
                     loading.close();
+                    ;
                     if (data.data.statusResponse == 0) {
                         let dulieu = data.data.rows;
                         let ldvs = [];

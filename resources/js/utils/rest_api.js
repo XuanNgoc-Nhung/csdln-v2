@@ -1,10 +1,7 @@
 import axios from 'axios';
 import m_util from './m_utils';
 import utils from './../utils';
-import LZString from 'lz-string';
-const randomString = (length) => {
-    return Math.random().toString(36).substring(2, 2 + length);
-};
+
 export default {
     DEFAULT_TIME_OUT: 60000,
     create_params(method, path, params) {
@@ -104,9 +101,7 @@ export default {
         if (loading !== undefined && loading) {
             // m_util.showLoading(true);
         }
-        let data_compressed = LZString.compressToBase64(JSON.stringify(data));
-        data_compressed = randomString(10) + data_compressed;
-        axios.post("forward-api", data_compressed, {timeout: tm}).then((response) => {
+        axios.post("forward-api", data, {timeout: tm}).then((response) => {
             // this.checkResponse(response);
             fn(response);
         }).catch((error) => {
