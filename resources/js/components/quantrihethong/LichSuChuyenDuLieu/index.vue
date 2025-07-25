@@ -7,32 +7,33 @@
                     <el-col :span="24">
                         <div class="table-name">Thông tin tìm kiếm</div>
                     </el-col>
-                    <el-col :sm="24" :lg="12">
-                        <label class="typo__label">Đơn vị quản lý</label>
-                        <eselect style="width:100%" @change="layLaiTruong" :disabled="thongtin.role>3" multiple
-                                 collapseTags v-model="donVi" :placeholder="'Chọn'" filterable :data="list_don_vi"
-                                 :fields="['tenDonVi','maDonVi']" />
-                    </el-col>
-                    <el-col :sm="12" :lg="6">
-                        <label class="typo__label">Cấp học </label>
-                        <eselect style="width:100%" @change="layLaiTruong" :disabled="thongtin.role==5" multiple
-                                 collapseTags v-model="capHoc" :placeholder="'Chọn'" filterable
-                                 :data="danh_sach_cap_hoc_full" :fields="['name','id']" />
-                    </el-col>
+
                     <el-col :sm="12" :lg="6">
                         <label class="typo__label">Năm học <span style="color:#DC0101">*</span> </label>
                         <el-form-item prop="namHoc">
                             <eselect style="width:100%" ref="namHoc" collapseTags v-model="dataSearch.namHoc"
-                                     :placeholder="'Chọn'" filterable :data="list_nam_hoc" :fields="['name','id']" />
+                                :placeholder="'Chọn'" filterable :data="list_nam_hoc" :fields="['name', 'id']" />
                         </el-form-item>
                     </el-col>
-                    <el-col :sm="24" :lg="12">
+                    <el-col :sm="12" :lg="12" v-if="dataSearch.namHoc<=2024">
+                        <label class="typo__label">Đơn vị quản lý</label>
+                        <eselect style="width:100%" @change="layLaiTruong" :disabled="thongtin.role>3" multiple
+                            collapseTags v-model="donVi" :placeholder="'Chọn'" filterable :data="list_don_vi"
+                            :fields="['tenDonVi','maDonVi']" />
+                    </el-col>
+                    <el-col :sm="12" :lg="6">
+                        <label class="typo__label">Cấp học </label>
+                        <eselect style="width:100%" @change="layLaiTruong" :disabled="thongtin.role==5" multiple
+                            collapseTags v-model="capHoc" :placeholder="'Chọn'" filterable
+                            :data="danh_sach_cap_hoc_full" :fields="['name','id']" />
+                    </el-col>
+                    <el-col :sm="12" :lg="12">
                         <label class="typo__label">Trường học <span style="color:#DC0101">*</span> </label>
 
                         <el-form-item prop="truongHoc">
                             <eselect ref="truongHoc" style="width:100%" multiple collapseTags
-                                     :disabled="thongtin.role==5" v-model="dataSearch.truongHoc" :placeholder="'Chọn'"
-                                     filterable :data="list_truong_hoc" :fields="['name','value']" />
+                                :disabled="thongtin.role==5" v-model="dataSearch.truongHoc" :placeholder="'Chọn'"
+                                filterable :data="list_truong_hoc" :fields="['name','value']" />
                         </el-form-item>
                         <!--
                         <div v-if="thongtin.role==5">
@@ -44,7 +45,7 @@
                     <el-col :sm="12" :lg="6">
                         <label class="typo__label">Ngày nhận dữ liệu</label>
                         <date-picker :lang="lang" class="dts-chonNgay" v-model="ngayBatDauDay" placeholder="Chọn ngày"
-                                     valueType="format" value-type="DD/MM/YYYY" format="DD/MM/YYYY">
+                            valueType="format" value-type="DD/MM/YYYY" format="DD/MM/YYYY">
                         </date-picker>
                     </el-col>
                     <!--                <el-col :span="4">-->
@@ -56,32 +57,33 @@
                     <el-col :sm="12" :lg="6">
                         <label class="typo__label">Mã lần đẩy </label>
                         <el-input clearable placeholder="Nhập..." @change="maGiaoDich = maGiaoDich.trim()"
-                                  @input="maGiaoDich = maGiaoDich.trim()" v-model.trim="maGiaoDich"></el-input>
+                            @input="maGiaoDich = maGiaoDich.trim()" v-model.trim="maGiaoDich"></el-input>
                     </el-col>
 
                     <el-col :sm="12" :lg="6">
                         <label class="typo__label">Đối tác </label>
                         <eselect style="width:100%" collapseTags v-model="maDoiTac" :placeholder="'Chọn'" filterable
-                                 :data="list_doi_tac" :fields="['name','value']" />
+                            :data="list_doi_tac" :fields="['name','value']" />
                     </el-col>
                     <el-col :sm="12" :lg="6">
                         <label class="typo__label">Trạng thái </label>
                         <eselect style="width:100%" collapseTags v-model="trangThai" :placeholder="'Chọn'" filterable
-                                 :data="list_trang_thai" :fields="['name','id']" />
+                            :data="list_trang_thai" :fields="['name','id']" />
                     </el-col>
                     <el-col :sm="12" :lg="6">
                         <label class="typo__label">Loại đồng bộ </label>
                         <eselect style="width:100%" collapseTags v-model="loaiDongBo" :placeholder="'Chọn'" filterable
-                                 :data="list_loai_dong_bo" :fields="['name','id']" />
+                            :data="list_loai_dong_bo" :fields="['name','id']" />
                     </el-col>
                     <el-col :sm="12" :lg="6">
                         <label class="typo__label">Loại đợt</label>
                         <eselect style="width:100%" collapseTags v-model="loaiDot" :placeholder="'Chọn'" filterable
-                                 :data="list_loai_dot" :fields="['name','id']" />
+                            :data="list_loai_dot" :fields="['name','id']" />
                     </el-col>
 
                     <el-col :span="24" class="text-center">
-                        <el-button class="bt-chinh" size="mini" @click.prevent="submitForm('ruleForm')" type="success">Tìm
+                        <el-button class="bt-chinh" size="mini" @click.prevent="submitForm('ruleForm')"
+                            type="success">Tìm
                             kiếm
                         </el-button>
                     </el-col>
@@ -95,226 +97,181 @@
                     <label class="table-name">Lịch sử tiếp nhận dữ liệu</label>
                 </el-col>
                 <el-col :span="24" style="padding:0">
-                    <el-table
-                            :data="danh_sach_du_lieu"
-                            border
-                            stripe
-                           max-height="600"
-                            empty-text="Không có bản ghi nào"
-                    >
+                    <el-table :data="danh_sach_du_lieu" border stripe max-height="600"
+                        empty-text="Không có bản ghi nào">
                         <!-- STT -->
-                        <el-table-column
-                                label="STT"
-                                align="center"
-                                fixed="left"
-                                :min-width="columnWidths.stt"
-                        >
+                        <el-table-column label="STT" align="center" fixed="left" :min-width="columnWidths.stt">
                             <template #default="{ $index }">
                                 <p>{{ (currentPage - 1) * limit + $index + 1 }}</p>
                             </template>
                         </el-table-column>
 
                         <!-- Thao tác -->
-                        <el-table-column
-                                label="Thao tác"
-                                align="center"
-                                fixed="right"
-                                :min-width="columnWidths.thaoTac"
-                        >
+                        <el-table-column label="Thao tác" align="center" fixed="right"
+                            :min-width="columnWidths.thaoTac">
                             <template #default="{ row }">
                                 <el-tooltip content="Xem chi tiết" placement="left">
-                                    <i
-                                            class="el-icon-view"
-                                            @click.prevent="xemChiTiet(row.maGiaoDich, row.loaiDuLieu)"
-                                    ></i>
+                                    <i class="el-icon-view"
+                                        @click.prevent="xemChiTiet(row.maGiaoDich, row.loaiDuLieu)"></i>
                                 </el-tooltip>
                             </template>
                         </el-table-column>
 
                         <!-- Mã lần đẩy -->
-                        <el-table-column
-                                label="Mã lần đẩy"
-                                :min-width="columnWidths.maLanDay"
-                        >
+                        <el-table-column label="Mã lần đẩy" :min-width="columnWidths.maLanDay">
                             <template #default="{ row }">
                                 <p>{{ row.reqMessId }}</p>
                             </template>
                         </el-table-column>
 
                         <!-- Đối tác -->
-                        <el-table-column
-                                label="Đối tác"
-                                :min-width="columnWidths.doiTac"
-                        >
+                        <el-table-column label="Đối tác" :min-width="columnWidths.doiTac">
                             <template #default="{ row }">
                                 <p>{{ row.tenDoitac }}</p>
                             </template>
                         </el-table-column>
 
                         <!-- Trường học -->
-                        <el-table-column
-                                label="Trường học"
-                                :min-width="columnWidths.truongHoc"
-                        >
+                        <el-table-column label="Trường học" :min-width="columnWidths.truongHoc">
                             <template #default="{ row }">
                                 <p>{{ row.tenTruongHoc }}</p>
                             </template>
                         </el-table-column>
 
                         <!-- Mã trường -->
-                        <el-table-column
-                                label="Mã trường"
-                                align="center"
-                                :min-width="columnWidths.maTruong"
-                        >
+                        <el-table-column label="Mã trường" align="center" :min-width="columnWidths.maTruong">
                             <template #default="{ row }">
                                 <p>{{ row.maTruongHoc }}</p>
                             </template>
                         </el-table-column>
 
                         <!-- Thời gian nhận -->
-                        <el-table-column
-                                label="Thời gian nhận"
-                                :min-width="columnWidths.thoiGianNhan"
-                        >
+                        <el-table-column label="Thời gian nhận" :min-width="columnWidths.thoiGianNhan">
                             <template #default="{ row }">
                                 <p>{{ row.timeDay }}</p>
                             </template>
                         </el-table-column>
 
                         <!-- Thời gian xử lý -->
-                        <el-table-column
-                                label="Thời gian xử lý"
-                                :min-width="columnWidths.thoiGianXuLy"
-                        >
+                        <el-table-column label="Thời gian xử lý" :min-width="columnWidths.thoiGianXuLy">
                             <template #default="{ row }">
                                 <p>{{ row.timePhanHoi }}</p>
                             </template>
                         </el-table-column>
 
                         <!-- Loại đồng bộ -->
-                        <el-table-column
-                                label="Loại đồng bộ"
-                                :min-width="columnWidths.loaiDongBo"
-                        >
+                        <el-table-column label="Loại đồng bộ" :min-width="columnWidths.loaiDongBo">
                             <template #default="{ row }">
                                 <p>{{ getLoaiDuLieu(parseInt(row.loaiDuLieu)) }}</p>
                             </template>
                         </el-table-column>
 
                         <!-- Năm đồng bộ -->
-                        <el-table-column
-                                label="Năm đồng bộ"
-                                align="center"
-                                :min-width="columnWidths.namDongBo"
-                        >
+                        <el-table-column label="Năm đồng bộ" align="center" :min-width="columnWidths.namDongBo">
                             <template #default="{ row }">
                                 <p>{{ row.namHoc }}-{{ row.namHoc + 1 }}</p>
                             </template>
                         </el-table-column>
 
                         <!-- Loại đợt -->
-                        <el-table-column
-                                label="Loại đợt"
-                                :min-width="columnWidths.loaiDot"
-                        >
+                        <el-table-column label="Loại đợt" :min-width="columnWidths.loaiDot">
                             <template #default="{ row }">
                                 <p>{{ getDot(parseInt(row.loaiDot)) }}</p>
                             </template>
                         </el-table-column>
                     </el-table>
 
-<!--                    <div class="table-responsive">-->
-<!--                        <table class="table table-striped table-bordered table-hover">-->
-<!--                            <thead>-->
-<!--                                <tr style="background:rgb(228, 235, 245)">-->
-<!--                                    <th class="text-center fixed-column fixed-col1">-->
-<!--                                        <p>STT</p>-->
-<!--                                    </th>-->
-<!--                                    <th class="text-center fixed-column fixed-col2">-->
-<!--                                        <p>Thao tác</p>-->
-<!--                                    </th>-->
-<!--                                    <th>-->
-<!--                                        <p>Mã lần đẩy</p>-->
-<!--                                    </th>-->
-<!--                                    <th class="text-center">-->
-<!--                                        <p>Đối tác</p>-->
-<!--                                    </th>-->
-<!--                                    <th>-->
-<!--                                        <p>Trường học</p>-->
-<!--                                    </th>-->
-<!--                                    <th class="text-center">-->
-<!--                                        <p>Mã trường</p>-->
-<!--                                    </th>-->
-<!--                                    <th>-->
-<!--                                        <p>Thời gian nhận</p>-->
-<!--                                    </th>-->
-<!--                                    <th>-->
-<!--                                        <p>Thời gian xử lý</p>-->
-<!--                                    </th>-->
-<!--                                    <th>-->
-<!--                                        <p>Loại đồng bộ</p>-->
-<!--                                    </th>-->
-<!--                                    <th class="text-center">-->
-<!--                                        <p>Năm đồng bộ</p>-->
-<!--                                    </th>-->
-<!--                                    <th>-->
-<!--                                        <p>Loại đợt</p>-->
-<!--                                    </th>-->
-<!--                                </tr>-->
-<!--                            </thead>-->
-<!--                            <tbody v-if="danh_sach_du_lieu.length===0">-->
-<!--                                <tr>-->
-<!--                                    <td class="text-center" colspan="11">-->
-<!--                                        <p>Không có bản ghi nào</p>-->
-<!--                                    </td>-->
-<!--                                </tr>-->
-<!--                            </tbody>-->
-<!--                            <tbody v-else>-->
-<!--                                <tr v-for="(px,index) in danh_sach_du_lieu">-->
-<!--                                    <td class="text-center fixed-column fixed-col1">-->
-<!--                                        <p>{{(currentPage-1)*limit + index+1}}</p>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center fixed-column fixed-col2">-->
-<!--                                        <el-tooltip content="Xem chi tiết " placement="left">-->
-<!--                                            &lt;!&ndash; <el-button plain type="info"-->
-<!--                                            v-on:click.prevent="xemChiTiet(px.maGiaoDich, px.loaiDuLieu)"-->
-<!--                                            size="mini" icon="el-icon-info"></el-button> &ndash;&gt;-->
-<!--                                            <i @click.prevent="xemChiTiet(px.maGiaoDich, px.loaiDuLieu)"-->
-<!--                                                class="el-icon-view"></i>-->
-<!--                                        </el-tooltip>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <p>{{px.reqMessId}} </p>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <p>{{px.tenDoitac}}</p>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <p>{{px.tenTruongHoc}}</p>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center">-->
-<!--                                        <p>{{px.maTruongHoc}}</p>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <p>{{px.timeDay}}</p>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <p>{{px.timePhanHoi}}</p>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <p>{{getLoaiDuLieu(parseInt(px.loaiDuLieu))}}</p>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center">-->
-<!--                                        <p>{{px.namHoc}}-{{px.namHoc+1}}</p>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <p>{{getDot(parseInt(px.loaiDot))}}</p>-->
-<!--                                    </td>-->
-<!--                                </tr>-->
-<!--                            </tbody>-->
-<!--                        </table>-->
-<!--                    </div>-->
+                    <!--                    <div class="table-responsive">-->
+                    <!--                        <table class="table table-striped table-bordered table-hover">-->
+                    <!--                            <thead>-->
+                    <!--                                <tr style="background:rgb(228, 235, 245)">-->
+                    <!--                                    <th class="text-center fixed-column fixed-col1">-->
+                    <!--                                        <p>STT</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th class="text-center fixed-column fixed-col2">-->
+                    <!--                                        <p>Thao tác</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th>-->
+                    <!--                                        <p>Mã lần đẩy</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th class="text-center">-->
+                    <!--                                        <p>Đối tác</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th>-->
+                    <!--                                        <p>Trường học</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th class="text-center">-->
+                    <!--                                        <p>Mã trường</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th>-->
+                    <!--                                        <p>Thời gian nhận</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th>-->
+                    <!--                                        <p>Thời gian xử lý</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th>-->
+                    <!--                                        <p>Loại đồng bộ</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th class="text-center">-->
+                    <!--                                        <p>Năm đồng bộ</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th>-->
+                    <!--                                        <p>Loại đợt</p>-->
+                    <!--                                    </th>-->
+                    <!--                                </tr>-->
+                    <!--                            </thead>-->
+                    <!--                            <tbody v-if="danh_sach_du_lieu.length===0">-->
+                    <!--                                <tr>-->
+                    <!--                                    <td class="text-center" colspan="11">-->
+                    <!--                                        <p>Không có bản ghi nào</p>-->
+                    <!--                                    </td>-->
+                    <!--                                </tr>-->
+                    <!--                            </tbody>-->
+                    <!--                            <tbody v-else>-->
+                    <!--                                <tr v-for="(px,index) in danh_sach_du_lieu">-->
+                    <!--                                    <td class="text-center fixed-column fixed-col1">-->
+                    <!--                                        <p>{{(currentPage-1)*limit + index+1}}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center fixed-column fixed-col2">-->
+                    <!--                                        <el-tooltip content="Xem chi tiết " placement="left">-->
+                    <!--                                            &lt;!&ndash; <el-button plain type="info"-->
+                    <!--                                            v-on:click.prevent="xemChiTiet(px.maGiaoDich, px.loaiDuLieu)"-->
+                    <!--                                            size="mini" icon="el-icon-info"></el-button> &ndash;&gt;-->
+                    <!--                                            <i @click.prevent="xemChiTiet(px.maGiaoDich, px.loaiDuLieu)"-->
+                    <!--                                                class="el-icon-view"></i>-->
+                    <!--                                        </el-tooltip>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td>-->
+                    <!--                                        <p>{{px.reqMessId}} </p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td>-->
+                    <!--                                        <p>{{px.tenDoitac}}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td>-->
+                    <!--                                        <p>{{px.tenTruongHoc}}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <p>{{px.maTruongHoc}}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td>-->
+                    <!--                                        <p>{{px.timeDay}}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td>-->
+                    <!--                                        <p>{{px.timePhanHoi}}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td>-->
+                    <!--                                        <p>{{getLoaiDuLieu(parseInt(px.loaiDuLieu))}}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <p>{{px.namHoc}}-{{px.namHoc+1}}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td>-->
+                    <!--                                        <p>{{getDot(parseInt(px.loaiDot))}}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                </tr>-->
+                    <!--                            </tbody>-->
+                    <!--                        </table>-->
+                    <!--                    </div>-->
                 </el-col>
 
                 <el-col :span="24">

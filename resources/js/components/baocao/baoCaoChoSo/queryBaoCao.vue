@@ -4,39 +4,37 @@
         <el-dialog :close-on-click-modal="false" width="90%" :close-on-press-escape="false" :before-close="dongModal"
             :title="textTitle" :visible.sync="hienThiPopup">
             <el-row :gutter="20">
-                <el-col :xs="24" :sm="24" :md="12" :lg="12" >
+                <el-col :xs="12" :sm="12" :md="6" :lg="6">
+                    <label for="">Năm học <span class="red">*</span></label>
+                    <eselect style="width:100%" collapseTags v-model="namHoc" :placeholder="'Chọn'" filterable
+                        :data="list_nam_hoc" :fields="['name', 'id']" />
+                </el-col>
+                <el-col :xs="24" :sm="24" :md="12" :lg="12" v-if="namHoc<=2024">
                     <label for="">Đơn vị quản lý
-                        <!-- <span class="red" v-if="!truongHoc||truongHoc.length==0">*</span> -->
                     </label>
                     <eselect style="width:100%" multiple collapseTags v-model="donVi" :disabled="thongtin.role>3"
                         clearable @change="chonDonVi" :placeholder="'Chọn'" filterable :data="list_don_vi"
                         :fields="['name','value']" />
                 </el-col>
-                <el-col v-if="thongtin.ma_so==36||thongtin.ma_so==19" :xs="24" :sm="12" :md="6" :lg="6" >
+                <el-col v-if="thongtin.ma_so==36||thongtin.ma_so==19" :xs="24" :sm="12" :md="6" :lg="6">
                     <label for="">Loại hình đào tạo </label>
                     <eselect style="width:100%" collapseTags v-model="loaiHinhTruong" @change="chonDonVi" clearable
-                        :placeholder="'Chọn'" filterable :data="list_loai_hinh_dao_tao"
-                        :fields="['name','value']" />
+                        :placeholder="'Chọn'" filterable :data="list_loai_hinh_dao_tao" :fields="['name','value']" />
                 </el-col>
-                <el-col v-if="caphoc==4||caphoc==5" :xs="24" :sm="12" :md="6" :lg="6" >
+                <el-col v-if="caphoc==4||caphoc==5" :xs="24" :sm="12" :md="6" :lg="6">
                     <label for="">Quy mô</label>
                     <eselect style="width:100%" clearable @change="getTruongHoc" multiple collapseTags
                         v-model="nhomTreMamNon" :placeholder="'Chọn'" filterable :data="nhom_tre_doc_lap"
                         :fields="['constantTitle','moetCode']" />
                 </el-col>
-                <el-col :xs="24" :sm="24" :md="12" :lg="12" >
+                <el-col :xs="24" :sm="24" :md="12" :lg="12">
                     <label for="">Trường học
                     </label>
                     <eselect style="width:100%" :disabled="thongtin.role==5" multiple collapseTags v-model="truongHoc"
                         :placeholder="'Chọn'" filterable clearable :data="danh_sach_truong_hoc"
                         :fields="['name','value']" />
                 </el-col>
-                <el-col :xs="12" :sm="12" :md="6" :lg="6" >
-                    <label for="">Năm học <span class="red">*</span></label>
-                    <eselect style="width:100%" collapseTags v-model="namHoc" :placeholder="'Chọn'" filterable
-                        :data="list_nam_hoc" :fields="['name','id']" />
-                </el-col>
-                <el-col v-if="canhocky" :xs="12" :sm="12" :md="8" :lg="6" >
+                <el-col v-if="canhocky" :xs="12" :sm="12" :md="8" :lg="6">
                     <label for="">Học kỳ <span class="red">*</span></label>
                     <eselect style="width:100%" collapseTags v-model="hocKy" :placeholder="'Chọn'" filterable
                         :data="list_hoc_ky" :fields="['name','id']" />

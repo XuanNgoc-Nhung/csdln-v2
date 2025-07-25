@@ -8,7 +8,12 @@
                     <el-col :span="24">
                         <div class="table-name">Thông tin tìm kiếm</div>
                     </el-col>
-                    <el-col :sm="16" :lg="8">
+                    <el-col :sm="12" :lg="8">
+                        <label class="typo__label">Năm học</label>
+                        <eselect style="width:100%" collapseTags v-model="namHoc" :placeholder="'Chọn'" filterable
+                                 :data="list_nam_hoc" :fields="['name','id']" />    
+                    </el-col>
+                    <el-col :sm="16" :lg="8" v-if="namHoc<=2024">
                         <label for="">Đơn vị quản lý</label>
                         <eselect style="width:100%" @change="chonDonVi" no-match-text="Không tìm thấy bản ghi nào"
                                  no-data-text="danh sách lựa chọn trống" collapse-tags v-model="maDonVi"
@@ -479,6 +484,8 @@ export default {
     computed: {},
     data() {
         return {
+            namHoc: 0,
+            list_nam_hoc: constant.LIST_YEARS_FULL,
             columnWidths:{
                 stt: 50,
                 thaoTac: 100,
@@ -553,6 +560,7 @@ export default {
     },
     mounted() {
         this.thongtin = JSON.parse(this.info);
+        this.namHoc = this.thongtin.namHocHienTai;
         this.getDonVi();
         this.getTruongHocThemMatKhau();
         this.getMatKhauKetChuyen();

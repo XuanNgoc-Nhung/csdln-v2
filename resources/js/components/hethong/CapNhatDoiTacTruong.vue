@@ -1,8 +1,6 @@
 <template>
     <div>
-
         <Breadcrumb :menu="'Tiếp nhận dữ liệu QLNT'" :desc="'Hệ thống đối tác trường'" />
-
         <div class="card-bieu-do">
 
             <el-form ref="ruleForm">
@@ -10,7 +8,12 @@
                     <el-col :span="24">
                         <div class="table-name">Thông tin tìm kiếm</div>
                     </el-col>
-                    <el-col :sm="16" :md="16" :lg="8">
+                    <el-col :sm="12" :md="12" :lg="4">
+                        <label class="typo__label">Năm học</label>
+                        <eselect style="width:100%" collapseTags v-model="namHoc" :placeholder="'Chọn'" filterable
+                                 :data="list_nam_hoc" :fields="['name','id']" />
+                    </el-col>
+                    <el-col :sm="16" :md="16" :lg="8" v-if="namHoc<=2024">
                         <label class="typo__label">Đơn vị quản lý</label>
                         <eselect style="width:100%" multiple collapseTags v-model="donVi" :placeholder="'Chọn'"
                                  filterable :data="list_don_vi" :fields="['tenDonVi','maDonVi']" />
@@ -28,12 +31,6 @@
                     </el-col>
                     <el-col :sm="8" :md="8" :lg="4">
                         <label class="typo__label">Đối tác</label>
-                        <!-- <el-select v-model="maDoiTac" filterable collapse-tags placeholder="Chọn"
-                                no-data-text="Không có dữ liệu" no-match-text="Không có dữ liệu phù hợp">
-                                <el-option v-for="item in ds_doi_tac" :key="item.value" :label="item.name" :value="item.value">
-                                </el-option>
-                            </el-select> -->
-
                         <eselect style="width:100%" collapseTags v-model="maDoiTac" :placeholder="'Chọn'" filterable
                                  :data="ds_doi_tac" :fields="['name','value']" />
                     </el-col>
@@ -323,7 +320,7 @@
     import ElementUI from 'element-ui';
     import VueAlertify from "vue-alertify";
     import Breadcrumb from '../ui/Breadcrumb.vue';
-
+    import constant from '../../utils/constant';    
     Vue.use(VueAlertify, {
         notifier: {
             delay: 5,
@@ -353,6 +350,8 @@
         computed: {},
         data() {
             return {
+                namHoc: 0,
+                list_nam_hoc: constant.LIST_YEARS_FULL,
                 columnWidths: {
                     checkbox: 50,
                     stt: 50,
@@ -392,6 +391,7 @@
         },
 
         mounted() {
+            this.namHoc = this.thongtin.namHocHienTai;
             this.getDonVi();
             for (let i = 0; i < this.list_cap_hoc_2.length; i++) {
                 this.list_cap_hoc.push(this.list_cap_hoc_2[i])

@@ -8,7 +8,13 @@
                 <el-col :span="24">
                     <div class="table-name">Thông tin tìm kiếm</div>
                 </el-col>
-
+                <el-col :sm="12"  :md="12" :lg="6">
+                    <label>Năm học <sup class="red">*</sup></label>
+                    <div>
+                        <eselect style="width:100%" collapseTags v-model="namHoc" :placeholder="'Chọn'" filterable
+                            :data="list_nam_hoc" :fields="['name', 'id']" />
+                    </div>
+                </el-col>
                 <el-col :sm="12"  :md="12" :lg="6">
                     <label>Tỉnh thành</label>
                     <div>
@@ -17,7 +23,7 @@
                                  :fields="['name','value']" />
                     </div>
                 </el-col>
-                <el-col :sm="12"  :md="12" :lg="6">
+                <el-col :sm="12"  :md="12" :lg="6" v-if="namHoc<=2024">
                     <label>Quận huyện</label>
                     <div>
                         <eselect style="width:100%" :disabled="thongtin.role>3" collapseTags @change="ChonQuanHuyen"
@@ -93,7 +99,7 @@
                                 <th>
                                     <p>Phường xã</p>
                                 </th>
-                                <th>
+                                <th v-if="namHoc<=2024">
                                     <p>Quận huyện</p>
                                 </th>
                                 <th>
@@ -132,7 +138,7 @@
                                 <td>
                                     <p>{{ qh.tenPhuongXa }}</p>
                                 </td>
-                                <td>
+                                <td v-if="namHoc<=2024">
                                     <p>{{ qh.tenQuanHuyen }}</p>
                                 </td>
                                 <td>
@@ -249,6 +255,7 @@
     import ESelectVue from '../../ui/ESelect.vue';
     import ElementUI from 'element-ui';
     import Breadcrumb from '../../ui/Breadcrumb.vue';
+    import constant from '../../../utils/constant';
 
     Vue.use(ElementUI);
     export default {
@@ -261,6 +268,8 @@
         computed: {},
         data() {
             return {
+                namHoc: 0,
+                list_nam_hoc: constant.LIST_YEARS_FULL,
                 fullScreenLoading: false,
                 check_confirm_come_back: false,
                 thongTinImport: {
@@ -345,6 +354,7 @@
             }
         },
         mounted() {
+            this.namHoc = this.thongtin.namHocHienTai;
             if (this.thongtin.role == 4) {
                 this.maQuanHuyen = this.thongtin.ma_phong;
                 this.dataAddOrUpdate.maQuanHuyenAdd = this.thongtin.ma_phong;

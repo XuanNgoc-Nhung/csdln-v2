@@ -475,6 +475,7 @@ class MyLoginController extends Controller
                     }
                 }
                 session(['cate_menu' => $permission]);
+                session(['token' => $token]);
                 $user_data = array(
                     "username" => $username,
                     "fullName" => $display_name,

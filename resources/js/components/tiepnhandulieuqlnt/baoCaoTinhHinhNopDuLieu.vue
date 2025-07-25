@@ -9,51 +9,54 @@
                     <el-col :span="24">
                         <div class="table-name">Thông tin tìm kiếm</div>
                     </el-col>
-                    <el-col :sm="24" :lg="12">
-                        <label class="typo__label">Đơn vị quản lý </label>
-                        <eselect style="width:100%" @change="layLaiTruong" :disabled="thongtin.role>3" multiple
-                                 collapseTags v-model="donVi" :placeholder="'Chọn'" filterable :data="list_don_vi"
-                                 :fields="['tenDonVi','maDonVi']" />
-                    </el-col>
-                    <el-col :sm="12" :lg="6">
-                        <label class="typo__label">Cấp học </label>
-                        <eselect style="width:100%" :disabled="thongtin.role==5" @change="layLaiTruong" multiple
-                                 collapseTags v-model="capHoc" :placeholder="'Chọn'" filterable
-                                 :data="danh_sach_cap_hoc_full" :fields="['name','id']" />
-                    </el-col>
+
                     <el-col :sm="12" :lg="6">
                         <label class="typo__label">Năm học <span class="red">*</span></label>
                         <el-form-item prop="namHoc">
                             <eselect style="width:100%" collapseTags v-model="dataSearch.namHoc" :placeholder="'Chọn'"
-                                     filterable :data="list_nam_hoc" :fields="['name','id']" />
+                                filterable :data="list_nam_hoc" :fields="['name','id']" />
                         </el-form-item>
+                    </el-col>
+                    <el-col :sm="24" :lg="12" v-if="dataSearch.namHoc<=2024">
+                        <label class="typo__label">Đơn vị quản lý </label>
+                        <eselect style="width:100%" @change="layLaiTruong" :disabled="thongtin.role>3" multiple
+                            collapseTags v-model="donVi" :placeholder="'Chọn'" filterable :data="list_don_vi"
+                            :fields="['tenDonVi','maDonVi']" />
+                    </el-col>
+                    <el-col :sm="12" :lg="6">
+                        <label class="typo__label">Cấp học </label>
+                        <eselect style="width:100%" :disabled="thongtin.role==5" @change="layLaiTruong" multiple
+                            collapseTags v-model="capHoc" :placeholder="'Chọn'" filterable
+                            :data="danh_sach_cap_hoc_full" :fields="['name','id']" />
+                    </el-col>
+
+                    <el-col :sm="12" :lg="6">
+                        <label class="typo__label">Học kỳ</label>
+                        <eselect style="width:100%" collapseTags v-model="hocKy" :placeholder="'Tất cả'" filterable
+                            :data="list_hoc_ky" :fields="['name', 'value']" />
                     </el-col>
                     <el-col :sm="24" :lg="12">
                         <label class="typo__label">Trường học <span style="color:#DC0101">*</span></label>
 
                         <el-form-item prop="truongHoc">
                             <eselect style="width:100%" ref="truongHoc" multiple collapseTags
-                                     :disabled="thongtin.role==5" v-model="dataSearch.truongHoc" :placeholder="'Chọn'"
-                                     filterable :data="list_truong_hoc" :fields="['name','value']" />
+                                :disabled="thongtin.role==5" v-model="dataSearch.truongHoc" :placeholder="'Chọn'"
+                                filterable :data="list_truong_hoc" :fields="['name','value']" />
                         </el-form-item>
                     </el-col>
 
-                    <el-col :sm="12" :lg="6">
-                        <label class="typo__label">Học kỳ</label>
-                        <eselect style="width:100%" collapseTags v-model="hocKy" :placeholder="'Tất cả'" filterable
-                                 :data="list_hoc_ky" :fields="['name','value']" />
-                    </el-col>
                     <el-col :sm="12" :lg="6">
                         <label class="typo__label">Loại dữ liệu <span class="red">*</span></label>
                         <el-form-item prop="loaiDuLieu">
                             <eselect style="width:100%" collapseTags v-model="dataSearch.loaiDuLieu"
-                                     @change="chonLoaiDuLieu" :placeholder="'Chọn'" filterable :data="list_loai_du_lieu"
-                                     :fields="['name','id']" />
+                                @change="chonLoaiDuLieu" :placeholder="'Chọn'" filterable :data="list_loai_du_lieu"
+                                :fields="['name','id']" />
                         </el-form-item>
                     </el-col>
 
                     <el-col :span="24" class="text-center">
-                        <el-button class="bt-chinh" size="mini" @click.prevent="submitForm('ruleForm')" type="success">Tìm
+                        <el-button class="bt-chinh" size="mini" @click.prevent="submitForm('ruleForm')"
+                            type="success">Tìm
                             kiếm
                         </el-button>
                     </el-col>
@@ -88,14 +91,14 @@
                     </div>
                 </el-col>
 
-                <el-col :span="24" >
-                   <div style="display: flex; justify-content: space-between;align-items: center;margin-bottom: 15px">
-                       <label style="" class="table-name">Báo cáo tình hình nộp dữ liệu cấp trường</label>
-                       <el-button class="bt-chinh" v-if="total_rows" type="success" size="mini"
-                                  @click.prevent="getDataExcel()">
-                           Xuất Excel
-                       </el-button>
-                   </div>
+                <el-col :span="24">
+                    <div style="display: flex; justify-content: space-between;align-items: center;margin-bottom: 15px">
+                        <label style="" class="table-name">Báo cáo tình hình nộp dữ liệu cấp trường</label>
+                        <el-button class="bt-chinh" v-if="total_rows" type="success" size="mini"
+                            @click.prevent="getDataExcel()">
+                            Xuất Excel
+                        </el-button>
+                    </div>
                     <div v-if="dataSearch.loaiDuLieu==-1" class="table-responsive">
                         <table class="table table-bordered table-striped table-hover">
                             <thead>

@@ -7,8 +7,12 @@
                     <el-col :span="24">
                         <div class="table-name">Thông tin tìm kiếm</div>
                     </el-col>
-                    <!-- đơn vị -->
-                    <el-col :sm="24" :md="12">
+                    <el-col :sm="12" :md="6">
+                        <label class="typo__label">Năm học <span class="red">*</span></label>
+                        <eselect style="width:100%" collapseTags v-model="namHoc" :placeholder="'Chọn'" filterable
+                            :data="list_nam_hoc" :fields="['name', 'id']" />
+                    </el-col>
+                    <el-col :sm="24" :md="12" v-if="namHoc<=2024">
                         <label class="typo__label">Đơn vị quản lý</label>
                         <eselect style="width:100%" :disabled="thongtin.role>3" multiple collapseTags
                             v-model="ds_don_vi" :placeholder="'Chọn'" filterable @change="ChonDonVi" :data="list_don_vi"
@@ -16,42 +20,16 @@
                     </el-col>
                     <el-col :sm="12" :md="6">
                         <label class="typo__label">Cấp học</label>
-
                         <eselect style="width:100%" :disabled="thongtin.role==5" multiple collapseTags
                             v-model="ds_cap_hoc" :placeholder="'Chọn'" filterable @change="ChonCapHoc"
                             :data="list_cap_hoc" :fields="['name','id']" />
-                        <!-- <div v-if="thongtin.role==5">
-                                <input :disabled="thongtin.role == 5" class="form-control" placeholder="Cấp học"
-                                    :value="capHocDangNhap" />
-                            </div> -->
                     </el-col>
-                    <!-- end cấp học -->
-                    <!-- Năm học -->
-                    <el-col :sm="12" :md="6">
-                        <!-- <multiselect v-model="danhSachNamHoc" :options="list_nam_hoc" :custom-label="setNameNamHoc"
-                                placeholder="Chọn năm học" label="name" deselectLabel="Đã chọn" selectLabel="Chưa chọn"
-                                selectedLabel="Đã chọn" track-by="name"></multiselect> -->
-
-                        <label class="typo__label">Năm học <span class="red">*</span></label>
-                        <eselect style="width:100%" collapseTags v-model="namHoc" :placeholder="'Chọn'" filterable
-                                 :data="list_nam_hoc" :fields="['name','id']" />
-                    </el-col>
-                    <!-- Hết năm học -->
-                    <!-- Trường học -->
                     <el-col :sm="24" :md="12">
-
                         <label class="typo__label">Trường học</label>
                         <eselect style="width:100%" multiple collapseTags :disabled="thongtin.role==5"
                             v-model="ds_truong_hoc" :placeholder="'Chọn'" filterable :data="list_truong_hoc"
                             :fields="['tenTruongHoc','maTruongHoc']" />
-                        <!-- <div v-if="thongtin.role==5">
-                                <label>Trường học</label>
-                                <input :disabled="thongtin.role == 5" :value="thongtin.display_name" class="form-control"
-                                    placeholder="Nhập..." />
-                            </div> -->
                     </el-col>
-                    <!-- Hết trường học -->
-
                     <el-col :sm="12" :md="6">
                         <label>Mã trường bổ sung
                             <el-tooltip effect="dark"
@@ -61,8 +39,7 @@
                             </el-tooltip>
                         </label>
 
-                        <el-input  @change="maTruongBoSung = maTruongBoSung.trim()"
-                            v-model="maTruongBoSung" />
+                        <el-input @change="maTruongBoSung = maTruongBoSung.trim()" v-model="maTruongBoSung" />
                     </el-col>
                     <el-col :sm="12" :md="6">
                         <label>Cấp học đẩy dữ liệu
@@ -79,34 +56,13 @@
                     <el-col :sm="24" :md="12">
                         <label>Thời gian nhận từ QLNT cuối</label>
                         <div>
-                            <el-date-picker
-                                    style="width: 100%"
-                                    v-model="tuNgay"
-                                    type="daterange"
-                                    align="center"
-                                    format="dd/MM/yyyy"
-                                    value-format="dd/MM/yyyy"
-                                    start-placeholder="Từ ngày"
-                                    end-placeholder="Đến ngày">
+                            <el-date-picker style="width: 100%" v-model="tuNgay" type="daterange" align="center"
+                                format="dd/MM/yyyy" value-format="dd/MM/yyyy" start-placeholder="Từ ngày"
+                                end-placeholder="Đến ngày">
                             </el-date-picker>
                         </div>
-<!--                        <div class="input-group input-daterange">-->
-
-<!--                            <date-picker :lang="lang" class="dts-chonNgay" v-model="tuNgay" placeholder="Chọn"-->
-<!--                                valueType="format" value-type="DD/MM/YYYY" format="DD/MM/YYYY">-->
-<!--                            </date-picker>-->
-<!--                            &lt;!&ndash; <date-picker :config="configDatePicker" placeholder="Ngày bắt đầu" @dp-change="ChonNgayBatDau"-->
-<!--                                             v-model="tuNgay"></date-picker> &ndash;&gt;-->
-<!--                            <div class="input-to">đến</div>-->
-<!--                            &lt;!&ndash; <date-picker :config="configDatePicker" placeholder="Ngày kết thúc" v-model="denNgay"></date-picker> &ndash;&gt;-->
-
-<!--                            <date-picker :lang="lang" class="dts-chonNgay" v-model="denNgay" placeholder="Chọn"-->
-<!--                                valueType="format" value-type="DD/MM/YYYY" format="DD/MM/YYYY">-->
-<!--                            </date-picker>-->
-<!--                        </div>-->
                     </el-col>
 
-                    <!-- học kỳ -->
                     <el-col :sm="12" :md="6">
                         <label>Học kỳ <span class="red">*</span></label>
                         <eselect style="width:100%" collapseTags v-model="hocKy" @change="ChonHocKy"
@@ -124,14 +80,6 @@
                             :preselect-first="true" track-by="name"></multiselect>
                     </el-col>
                     <!-- hết loại đồng bộ -->
-                    <!-- Chỉ hiện trường chưa đẩy -->
-                    <!-- <div v-if="loaiDanhSach==1" class="col-md-3 timkiem" style="display:flex; align-items:center">
-                            <input v-model="truongChuaHoanThanh" type="checkbox" />
-                            <span>Trường chưa hoàn thành (<span style="color:#DC0101">**</span>)
-                            </span>
-                        </div> -->
-                    <!-- hết chỉ hiện trường chưa dẩy -->
-                    <!-- end filter -->
                     <!-- button -->
                     <el-col :span="24" class="text-center">
                         <el-button class="bt-chinh" plain type="success" size="mini"
@@ -146,7 +94,7 @@
         <div class="card-bieu-do">
             <el-row :gutter="24">
                 <el-col v-if='false' :span="12">
-                        <label class="table-name">Danh sách trường kết chuyển dữ liệu lên Bộ</label>
+                    <label class="table-name">Danh sách trường kết chuyển dữ liệu lên Bộ</label>
                     <!-- <p><b>Ghi chú: </b> NT: Nhà trẻ; MG: Mẫu giáo; TH: Tiểu học; THCS: Trung học Cở sở;
                         THPT: Trung học phổ thông.</p> -->
                 </el-col>
@@ -181,58 +129,48 @@
                         <label class="table-name">Danh sách trường kết chuyển dữ liệu lên Bộ</label>
                         <div class="text-right">
                             <el-button class="bt-phu" type="success dpull-right" v-if="hienHanhDong&&thongtin.role==125"
-                        style="margin:0 0 0 15px;" v-on:click.prevent="showCreatSyncData">
-                        Thêm mới lịch đồng bộ
-                    </el-button>
+                                style="margin:0 0 0 15px;" v-on:click.prevent="showCreatSyncData">
+                                Thêm mới lịch đồng bộ
+                            </el-button>
 
-                    <el-tooltip content="Xóa dữ liệu" placement="top">
-                        <el-button class="bt-xoa"
-                            v-if="hienHanhDong&&(truong_duoc_phep||hienthibutton||true)&&CacTruongDay.length"
-                            type="danger" size="mini" v-on:click.prevent="xoaDuLieuNhieuTruong">
-                            Xóa
-                        </el-button>
-                    </el-tooltip>
-                    <el-tooltip content="Đẩy dữ liệu lên bộ" placement="top">
-                        <el-button class="bt-chinh" v-if="hienthibutton&&hienHanhDong&&CacTruongDay.length"
-                            type="primary" size="mini" v-on:click.prevent="dayLaiDuLieu2">
-                            Đẩy lên Bộ
-                        </el-button>
-                    </el-tooltip>
-                    <el-tooltip content="Xuất dữ liệu " placement="top">
-                        <el-button class="bt-chinh" type="primary" size="mini" v-if="hienHanhDong"
-                            :disabled="list_truong_hoc_chua_day.length==0" v-on:click.prevent="getDownLoad">
-                            Xuất Excel
-                        </el-button>
-                    </el-tooltip>
+                            <el-tooltip content="Xóa dữ liệu" placement="top">
+                                <el-button class="bt-xoa"
+                                    v-if="hienHanhDong&&(truong_duoc_phep||hienthibutton||true)&&CacTruongDay.length"
+                                    type="danger" size="mini" v-on:click.prevent="xoaDuLieuNhieuTruong">
+                                    Xóa
+                                </el-button>
+                            </el-tooltip>
+                            <el-tooltip content="Đẩy dữ liệu lên bộ" placement="top">
+                                <el-button class="bt-chinh" v-if="hienthibutton&&hienHanhDong&&CacTruongDay.length"
+                                    type="primary" size="mini" v-on:click.prevent="dayLaiDuLieu2">
+                                    Đẩy lên Bộ
+                                </el-button>
+                            </el-tooltip>
+                            <el-tooltip content="Xuất dữ liệu " placement="top">
+                                <el-button class="bt-chinh" type="primary" size="mini" v-if="hienHanhDong"
+                                    :disabled="list_truong_hoc_chua_day.length==0" v-on:click.prevent="getDownLoad">
+                                    Xuất Excel
+                                </el-button>
+                            </el-tooltip>
                         </div>
                     </div>
                 </el-col>
 
 
                 <el-col :span="24">
-                    <el-table
-                            max-height="600"
-                            :data="list_truong_hoc_chua_day"
-                            style="width: 100%"
-                            border
-                            :header-cell-style="{ background: '#e4ebf5' }"
-
-                            empty-text="Không có bản ghi nào được tìm thấy"
-                    >
+                    <el-table max-height="600" :data="list_truong_hoc_chua_day" style="width: 100%" border
+                        :header-cell-style="{ background: '#e4ebf5' }" empty-text="Không có bản ghi nào được tìm thấy">
                         <!-- STT Column -->
-                        <el-table-column
-                                label="STT"
-                                :fixed=" windowWidth > 1200 ? 'left' : false"
-                                align="center"
-                                :width="start > 9999 ? 70 : 60"
-                        >
+                        <el-table-column label="STT" :fixed=" windowWidth > 1200 ? 'left' : false" align="center"
+                            :width="start > 9999 ? 70 : 60">
                             <template #default="scope">
                                 {{ (currentPage - 1) * limit + scope.$index + 1 }}
                             </template>
                         </el-table-column>
 
                         <!-- Trường học -->
-                        <el-table-column  :fixed=" windowWidth > 1200 ? 'left' : false" label="Trường học"  :min-width="columnWidths.truongHoc">
+                        <el-table-column :fixed=" windowWidth > 1200 ? 'left' : false" label="Trường học"
+                            :min-width="columnWidths.truongHoc">
                             <template #default="scope">
                                 {{ scope.row.tenTruongHoc }} - {{ scope.row.maTruongHoc }}
                             </template>
@@ -268,10 +206,8 @@
 
                         <!-- Sở/Phòng duyệt -->
                         <el-table-column
-                                :label="ds_cap_hoc.toString() === [3, 6].toString() || ds_cap_hoc.toString() === [6, 3].toString() || ds_cap_hoc.toString() === [3].toString() || ds_cap_hoc.toString() === [6].toString() ? 'Sở duyệt' : 'Phòng duyệt'"
-                                align="center"
-                                width="120"
-                        >
+                            :label="ds_cap_hoc.toString() === [3, 6].toString() || ds_cap_hoc.toString() === [6, 3].toString() || ds_cap_hoc.toString() === [3].toString() || ds_cap_hoc.toString() === [6].toString() ? 'Sở duyệt' : 'Phòng duyệt'"
+                            align="center" width="120">
                             <template #default="scope">
                                 {{ scope.row.ngayPhongDuyet }}
                             </template>
@@ -321,37 +257,22 @@
                         </el-table-column>
 
                         <!-- Chọn loại dữ liệu -->
-                        <el-table-column
-                                label="Chọn loại dữ liệu"
-                                v-if="hienHanhDong && (hienthibutton || truong_duoc_phep || true)"
-
-                                width="320"
-                        >
+                        <el-table-column label="Chọn loại dữ liệu"
+                            v-if="hienHanhDong && (hienthibutton || truong_duoc_phep || true)" width="320">
                             <template #header>
                                 <div style="width:100%">
 
                                     <div style="margin-bottom: 8px">Loại dữ liệu</div>
-                                    <eselect style="width:100%" multiple collapseTags
-                                             v-model="danhSachChonDongBo" @change="chonDuLieuDay"
-                                             :placeholder="'Chọn'" filterable :data="list_dong_bo_du_lieu"
-                                             :fields="['name','key']" />
+                                    <eselect style="width:100%" multiple collapseTags v-model="danhSachChonDongBo"
+                                        @change="chonDuLieuDay" :placeholder="'Chọn'" filterable
+                                        :data="list_dong_bo_du_lieu" :fields="['name','key']" />
                                 </div>
                             </template>
                             <template #default="scope">
-                                <el-select
-                                        v-model="scope.row.key"
-                                        multiple
-                                        filterable
-                                        collapse-tags
-                                        placeholder="Chọn"
-                                        @change="chonDuLieuDay"
-                                >
-                                    <el-option
-                                            v-for="item in scope.row.thongTinBuocDays"
-                                            :key="item.key"
-                                            :label="item.name"
-                                            :value="item.key"
-                                    />
+                                <el-select v-model="scope.row.key" multiple filterable collapse-tags placeholder="Chọn"
+                                    @change="chonDuLieuDay">
+                                    <el-option v-for="item in scope.row.thongTinBuocDays" :key="item.key"
+                                        :label="item.name" :value="item.key" />
                                 </el-select>
                             </template>
                         </el-table-column>
@@ -370,204 +291,204 @@
                         </el-table-column>
                     </el-table>
 
-<!--                    <div class="table-responsive">-->
-<!--                        <table class="table table-bordered table-striped table-hover bieudo-pxn"-->
-<!--                            style="width:max-content;max-width:max-content;min-width:100%">-->
-<!--                            <thead style="background: #e4ebf5">-->
-<!--                                <tr>-->
-<!--                                    <th rowspan="2" class="fixed-column fixed-col1">-->
-<!--                                        <p>STT</p>-->
-<!--                                    </th>-->
+                    <!--                    <div class="table-responsive">-->
+                    <!--                        <table class="table table-bordered table-striped table-hover bieudo-pxn"-->
+                    <!--                            style="width:max-content;max-width:max-content;min-width:100%">-->
+                    <!--                            <thead style="background: #e4ebf5">-->
+                    <!--                                <tr>-->
+                    <!--                                    <th rowspan="2" class="fixed-column fixed-col1">-->
+                    <!--                                        <p>STT</p>-->
+                    <!--                                    </th>-->
 
-<!--                                    <th rowspan="2">-->
-<!--                                        <p>Trường học</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2">-->
-<!--                                        <p>Đối tác</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" class="text-center">-->
-<!--                                        <p>Năm học</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" class="text-center">-->
-<!--                                        <p>Ngày nhận</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" class="text-center">-->
-<!--                                        <p>Trường duyệt</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" class="text-center">-->
-<!--                                        <p>-->
-<!--                                            {{-->
-<!--                                        ds_cap_hoc.toString() == [3, 6].toString() || ds_cap_hoc.toString() == [6, 3].toString() || ds_cap_hoc.toString() == [3].toString() || ds_cap_hoc.toString() == [6].toString() ? 'Sở' : 'Phòng'-->
-<!--                                    }}-->
-<!--                                            duyệt</p>-->
-<!--                                    </th>-->
-<!--                                    <th colspan="5" class="text-center">-->
-<!--                                        <p>Dữ liệu đã nộp</p>-->
-<!--                                    </th>-->
-<!--                                    <th v-if="hienHanhDong&&(hienthibutton||truong_duoc_phep||true)"-->
-<!--                                        rowspan="2">-->
-<!--                                        <div>Chọn loại dữ liệu</div>-->
-<!--                                        <div style="width:100%">-->
+                    <!--                                    <th rowspan="2">-->
+                    <!--                                        <p>Trường học</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2">-->
+                    <!--                                        <p>Đối tác</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" class="text-center">-->
+                    <!--                                        <p>Năm học</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" class="text-center">-->
+                    <!--                                        <p>Ngày nhận</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" class="text-center">-->
+                    <!--                                        <p>Trường duyệt</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" class="text-center">-->
+                    <!--                                        <p>-->
+                    <!--                                            {{-->
+                    <!--                                        ds_cap_hoc.toString() == [3, 6].toString() || ds_cap_hoc.toString() == [6, 3].toString() || ds_cap_hoc.toString() == [3].toString() || ds_cap_hoc.toString() == [6].toString() ? 'Sở' : 'Phòng'-->
+                    <!--                                    }}-->
+                    <!--                                            duyệt</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th colspan="5" class="text-center">-->
+                    <!--                                        <p>Dữ liệu đã nộp</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th v-if="hienHanhDong&&(hienthibutton||truong_duoc_phep||true)"-->
+                    <!--                                        rowspan="2">-->
+                    <!--                                        <div>Chọn loại dữ liệu</div>-->
+                    <!--                                        <div style="width:100%">-->
 
 
-<!--                                            <eselect style="width:100%" multiple collapseTags-->
-<!--                                                v-model="danhSachChonDongBo" @change="chonDuLieuDay"-->
-<!--                                                :placeholder="'Chọn'" filterable :data="list_dong_bo_du_lieu"-->
-<!--                                                :fields="['name','key']" />-->
-<!--                                        </div>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" class="text-center">-->
-<!--                                        <p>Thao tác</p>-->
-<!--                                    </th>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <th class="text-center">-->
-<!--                                        <p>Cán bộ</p>-->
-<!--                                    </th>-->
-<!--                                    <th class="text-center">-->
-<!--                                        <p>Học sinh</p>-->
-<!--                                    </th>-->
-<!--                                    <th class="text-center">-->
-<!--                                        <p>Lớp học</p>-->
-<!--                                    </th>-->
-<!--                                    <th class="text-center">-->
-<!--                                        <p>KQ giữa kỳ</p>-->
-<!--                                    </th>-->
-<!--                                    <th class="text-center">-->
-<!--                                        <p>KQ cuối kỳ</p>-->
-<!--                                    </th>-->
-<!--                                </tr>-->
-<!--                            </thead>-->
-<!--                            <tbody v-if="list_truong_hoc_chua_day.length==0">-->
-<!--                                <tr>-->
-<!--                                    <td class="text-center" colspan="14">-->
-<!--                                        <p>Không có bản ghi nào được tìm thấy</p>-->
-<!--                                    </td>-->
-<!--                                </tr>-->
-<!--                            </tbody>-->
-<!--                            <tbody v-else>-->
-<!--                                <tr v-for="(yc,index) in list_truong_hoc_chua_day" :key="index">-->
-<!--                                    <td class="text-center fixed-column fixed-col1">-->
-<!--                                        <p>{{ (currentPage - 1) * limit + index + 1 }}</p>-->
-<!--                                    </td>-->
+                    <!--                                            <eselect style="width:100%" multiple collapseTags-->
+                    <!--                                                v-model="danhSachChonDongBo" @change="chonDuLieuDay"-->
+                    <!--                                                :placeholder="'Chọn'" filterable :data="list_dong_bo_du_lieu"-->
+                    <!--                                                :fields="['name','key']" />-->
+                    <!--                                        </div>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" class="text-center">-->
+                    <!--                                        <p>Thao tác</p>-->
+                    <!--                                    </th>-->
+                    <!--                                </tr>-->
+                    <!--                                <tr>-->
+                    <!--                                    <th class="text-center">-->
+                    <!--                                        <p>Cán bộ</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th class="text-center">-->
+                    <!--                                        <p>Học sinh</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th class="text-center">-->
+                    <!--                                        <p>Lớp học</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th class="text-center">-->
+                    <!--                                        <p>KQ giữa kỳ</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th class="text-center">-->
+                    <!--                                        <p>KQ cuối kỳ</p>-->
+                    <!--                                    </th>-->
+                    <!--                                </tr>-->
+                    <!--                            </thead>-->
+                    <!--                            <tbody v-if="list_truong_hoc_chua_day.length==0">-->
+                    <!--                                <tr>-->
+                    <!--                                    <td class="text-center" colspan="14">-->
+                    <!--                                        <p>Không có bản ghi nào được tìm thấy</p>-->
+                    <!--                                    </td>-->
+                    <!--                                </tr>-->
+                    <!--                            </tbody>-->
+                    <!--                            <tbody v-else>-->
+                    <!--                                <tr v-for="(yc,index) in list_truong_hoc_chua_day" :key="index">-->
+                    <!--                                    <td class="text-center fixed-column fixed-col1">-->
+                    <!--                                        <p>{{ (currentPage - 1) * limit + index + 1 }}</p>-->
+                    <!--                                    </td>-->
 
-<!--                                    <td>-->
-<!--                                        <p>{{ yc.tenTruongHoc }}-->
-<!--                                            - -->
-<!--                                            {{ yc.maTruongHoc }}</p>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <p>{{ yc.maDoiTac }}</p>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center">-->
-<!--                                        <p>{{ yc.namHoc }}-{{ yc.namHoc + 1 }}</p>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center">-->
-<!--                                        <p>{{ yc.ngayNopTuQlntCuoi }}</p>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center">-->
-<!--                                        <p>{{ yc.ngayTruongDuyet }}</p>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center">-->
-<!--                                        <p>{{ yc.ngayPhongDuyet }}</p>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center">-->
-<!--                                        <a href="#" title="Xem chi tiết" @click.prevent="ChuyenHuongCanBo(yc)">-->
-<!--                                            <p v-html="yc.countGvStr"></p>-->
-<!--                                        </a>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center">-->
-<!--                                        <a href="#" title="Xem chi tiết"-->
-<!--                                            @click.prevent="ChuyenHuongHocSinh(yc)">-->
-<!--                                            <p v-html="yc.countHsStr"></p>-->
-<!--                                        </a>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center">-->
-<!--                                        <a href="#" title="Xem chi tiết" @click.prevent="ChuyenHuongLopHoc(yc)">-->
-<!--                                            <p v-html="yc.countLhStr"></p>-->
-<!--                                        </a>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center">-->
-<!--                                        <a href="#" title="Xem chi tiết" @click.prevent="ChuyenHuongKqht(yc)">-->
-<!--                                            <p v-html="yc.countKqGiuaKy"></p>-->
-<!--                                        </a>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center">-->
-<!--                                        <a href="#" title="Xem chi tiết" @click.prevent="ChuyenHuongKqht(yc)">-->
-<!--                                            <p v-html="yc.ketQuaLienCap"></p>-->
-<!--                                        </a>-->
-<!--                                    </td>-->
-<!--                                    <td v-if="hienHanhDong&&(hienthibutton||truong_duoc_phep||true)">-->
-<!--                                        <div>-->
-<!--                                            &lt;!&ndash; Thay đổi &ndash;&gt;-->
-<!--                                            &lt;!&ndash; <el-select clearable v-model="yc.key" multiple filterable collapse-tags-->
-<!--                                        placeholder="Chọn loại dữ liệu" no-data-text="Không có dữ liệu"-->
-<!--                                        @change="chonDuLieuDay" no-match-text="Không có dữ liệu phù hợp">-->
-<!--                                        <el-option v-for="item in yc.thongTinBuocDays" :key="item.key"-->
-<!--                                            :label="item.name" :value="item.key">-->
-<!--                                        </el-option>-->
-<!--                                    </el-select>-->
-<!--                                     &ndash;&gt;-->
-<!--                                            <eselect style="width:100%" multiple collapseTags v-model="yc.key"-->
-<!--                                                @change="chonDuLieuDay" :placeholder="'Chọn'" filterable-->
-<!--                                                :data="yc.thongTinBuocDays" :fields="['name','key']" />-->
-<!--                                            &lt;!&ndash; Hết thay đổi &ndash;&gt;-->
-<!--                                        </div>-->
-<!--                                    </td>-->
-<!--                                    &lt;!&ndash; <td> <p>{{getTrangThai(yc.status)}}</p> </!&ndash;&gt;-->
-<!--                                    <td class="text-center">-->
-<!--                                        <div v-if="hienHanhDong">-->
-<!--                                            <el-tooltip v-if="false" content="Kiểm tra dữ liệu" placement="top">-->
-<!--                                                &lt;!&ndash; <el-button size="mini" type="info"> &ndash;&gt;-->
-<!--                                                <i @click.prevent="ChuyenHuong(yc)" class="el-icon-eleme"></i>-->
-<!--                                                &lt;!&ndash; </el-button> &ndash;&gt;-->
-<!--                                            </el-tooltip>-->
-<!--                                            <el-tooltip v-if="false" content="Xem lịch sử " placement="top">-->
-<!--                                                &lt;!&ndash; <el-button type="info"  size="mini"> &ndash;&gt;-->
-<!--                                                <i class="el-icon-notebook-2"-->
-<!--                                                   @click.prevent="XemLichSu(yc)"></i>-->
-<!--                                                &lt;!&ndash; </el-button> &ndash;&gt;-->
-<!--                                            </el-tooltip>-->
-<!--                                            <el-tooltip v-if="thongtin.role==5||true" content="Duyệt"-->
-<!--                                                        placement="top">-->
-<!--                                                &lt;!&ndash; <el-button type="primary"-->
-<!--                                            size="mini"></el-button> &ndash;&gt;-->
-<!--                                                <i @click.prevent="DuyetLenCapTren(yc)"-->
-<!--                                                   class="el-icon-check"></i>-->
-<!--                                            </el-tooltip>-->
-<!--                                            <el-tooltip-->
-<!--                                                    v-if="thongtin.role==4||(thongtin.ma_so==36&&thongtin.role==2)"-->
-<!--                                                    content="Duyệt" placement="top">-->
-<!--                                                &lt;!&ndash; <el-button type="primary" @click.prevent="DuyetLenCapTrenPhong(yc)"-->
-<!--                                            size="mini"></el-button> &ndash;&gt;-->
-<!--                                                <i @click.prevent="DuyetLenCapTrenPhong(yc)"-->
-<!--                                                   class="el-icon-check"></i>-->
-<!--                                            </el-tooltip>-->
-<!--                                            <el-tooltip v-if="thongtin.role==4" content="Từ chối"-->
-<!--                                                        placement="top">-->
-<!--                                                &lt;!&ndash; <el-button type="danger"-->
-<!--                                            size="mini"> &ndash;&gt;-->
-<!--                                                <i @click.prevent="tuChoiPhong(yc)" class="el-icon-close"></i>-->
-<!--                                                &lt;!&ndash; </el-button> &ndash;&gt;-->
-<!--                                            </el-tooltip>-->
-<!--                                            <el-tooltip v-if="thongtin.role==2||thongtin.role==3"-->
-<!--                                                        content="Từ chối" placement="top">-->
-<!--                                                <i @click.prevent="tuChoiSo(yc)" class="el-icon-close"></i>-->
-<!--                                                &lt;!&ndash; <el-button type="danger" @click.prevent="tuChoiSo(yc)" size="mini">-->
-<!--                                            <i class="el-icon-remove"></i></el-button> &ndash;&gt;-->
-<!--                                            </el-tooltip>-->
-<!--                                            <el-tooltip v-if="2==3" content="Xóa" placement="top">-->
-<!--                                                <el-button type="danger" @click.prevent="ConFirmDelete(yc)"-->
-<!--                                                           size="mini">-->
-<!--                                                    <i class="el-icon-s-promotion"></i></el-button>-->
-<!--                                            </el-tooltip>-->
-<!--                                        </div>-->
-<!--                                    </td>-->
+                    <!--                                    <td>-->
+                    <!--                                        <p>{{ yc.tenTruongHoc }}-->
+                    <!--                                            - -->
+                    <!--                                            {{ yc.maTruongHoc }}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td>-->
+                    <!--                                        <p>{{ yc.maDoiTac }}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <p>{{ yc.namHoc }}-{{ yc.namHoc + 1 }}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <p>{{ yc.ngayNopTuQlntCuoi }}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <p>{{ yc.ngayTruongDuyet }}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <p>{{ yc.ngayPhongDuyet }}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <a href="#" title="Xem chi tiết" @click.prevent="ChuyenHuongCanBo(yc)">-->
+                    <!--                                            <p v-html="yc.countGvStr"></p>-->
+                    <!--                                        </a>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <a href="#" title="Xem chi tiết"-->
+                    <!--                                            @click.prevent="ChuyenHuongHocSinh(yc)">-->
+                    <!--                                            <p v-html="yc.countHsStr"></p>-->
+                    <!--                                        </a>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <a href="#" title="Xem chi tiết" @click.prevent="ChuyenHuongLopHoc(yc)">-->
+                    <!--                                            <p v-html="yc.countLhStr"></p>-->
+                    <!--                                        </a>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <a href="#" title="Xem chi tiết" @click.prevent="ChuyenHuongKqht(yc)">-->
+                    <!--                                            <p v-html="yc.countKqGiuaKy"></p>-->
+                    <!--                                        </a>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <a href="#" title="Xem chi tiết" @click.prevent="ChuyenHuongKqht(yc)">-->
+                    <!--                                            <p v-html="yc.ketQuaLienCap"></p>-->
+                    <!--                                        </a>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td v-if="hienHanhDong&&(hienthibutton||truong_duoc_phep||true)">-->
+                    <!--                                        <div>-->
+                    <!--                                            &lt;!&ndash; Thay đổi &ndash;&gt;-->
+                    <!--                                            &lt;!&ndash; <el-select clearable v-model="yc.key" multiple filterable collapse-tags-->
+                    <!--                                        placeholder="Chọn loại dữ liệu" no-data-text="Không có dữ liệu"-->
+                    <!--                                        @change="chonDuLieuDay" no-match-text="Không có dữ liệu phù hợp">-->
+                    <!--                                        <el-option v-for="item in yc.thongTinBuocDays" :key="item.key"-->
+                    <!--                                            :label="item.name" :value="item.key">-->
+                    <!--                                        </el-option>-->
+                    <!--                                    </el-select>-->
+                    <!--                                     &ndash;&gt;-->
+                    <!--                                            <eselect style="width:100%" multiple collapseTags v-model="yc.key"-->
+                    <!--                                                @change="chonDuLieuDay" :placeholder="'Chọn'" filterable-->
+                    <!--                                                :data="yc.thongTinBuocDays" :fields="['name','key']" />-->
+                    <!--                                            &lt;!&ndash; Hết thay đổi &ndash;&gt;-->
+                    <!--                                        </div>-->
+                    <!--                                    </td>-->
+                    <!--                                    &lt;!&ndash; <td> <p>{{getTrangThai(yc.status)}}</p> </!&ndash;&gt;-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <div v-if="hienHanhDong">-->
+                    <!--                                            <el-tooltip v-if="false" content="Kiểm tra dữ liệu" placement="top">-->
+                    <!--                                                &lt;!&ndash; <el-button size="mini" type="info"> &ndash;&gt;-->
+                    <!--                                                <i @click.prevent="ChuyenHuong(yc)" class="el-icon-eleme"></i>-->
+                    <!--                                                &lt;!&ndash; </el-button> &ndash;&gt;-->
+                    <!--                                            </el-tooltip>-->
+                    <!--                                            <el-tooltip v-if="false" content="Xem lịch sử " placement="top">-->
+                    <!--                                                &lt;!&ndash; <el-button type="info"  size="mini"> &ndash;&gt;-->
+                    <!--                                                <i class="el-icon-notebook-2"-->
+                    <!--                                                   @click.prevent="XemLichSu(yc)"></i>-->
+                    <!--                                                &lt;!&ndash; </el-button> &ndash;&gt;-->
+                    <!--                                            </el-tooltip>-->
+                    <!--                                            <el-tooltip v-if="thongtin.role==5||true" content="Duyệt"-->
+                    <!--                                                        placement="top">-->
+                    <!--                                                &lt;!&ndash; <el-button type="primary"-->
+                    <!--                                            size="mini"></el-button> &ndash;&gt;-->
+                    <!--                                                <i @click.prevent="DuyetLenCapTren(yc)"-->
+                    <!--                                                   class="el-icon-check"></i>-->
+                    <!--                                            </el-tooltip>-->
+                    <!--                                            <el-tooltip-->
+                    <!--                                                    v-if="thongtin.role==4||(thongtin.ma_so==36&&thongtin.role==2)"-->
+                    <!--                                                    content="Duyệt" placement="top">-->
+                    <!--                                                &lt;!&ndash; <el-button type="primary" @click.prevent="DuyetLenCapTrenPhong(yc)"-->
+                    <!--                                            size="mini"></el-button> &ndash;&gt;-->
+                    <!--                                                <i @click.prevent="DuyetLenCapTrenPhong(yc)"-->
+                    <!--                                                   class="el-icon-check"></i>-->
+                    <!--                                            </el-tooltip>-->
+                    <!--                                            <el-tooltip v-if="thongtin.role==4" content="Từ chối"-->
+                    <!--                                                        placement="top">-->
+                    <!--                                                &lt;!&ndash; <el-button type="danger"-->
+                    <!--                                            size="mini"> &ndash;&gt;-->
+                    <!--                                                <i @click.prevent="tuChoiPhong(yc)" class="el-icon-close"></i>-->
+                    <!--                                                &lt;!&ndash; </el-button> &ndash;&gt;-->
+                    <!--                                            </el-tooltip>-->
+                    <!--                                            <el-tooltip v-if="thongtin.role==2||thongtin.role==3"-->
+                    <!--                                                        content="Từ chối" placement="top">-->
+                    <!--                                                <i @click.prevent="tuChoiSo(yc)" class="el-icon-close"></i>-->
+                    <!--                                                &lt;!&ndash; <el-button type="danger" @click.prevent="tuChoiSo(yc)" size="mini">-->
+                    <!--                                            <i class="el-icon-remove"></i></el-button> &ndash;&gt;-->
+                    <!--                                            </el-tooltip>-->
+                    <!--                                            <el-tooltip v-if="2==3" content="Xóa" placement="top">-->
+                    <!--                                                <el-button type="danger" @click.prevent="ConFirmDelete(yc)"-->
+                    <!--                                                           size="mini">-->
+                    <!--                                                    <i class="el-icon-s-promotion"></i></el-button>-->
+                    <!--                                            </el-tooltip>-->
+                    <!--                                        </div>-->
+                    <!--                                    </td>-->
 
-<!--                                </tr>-->
-<!--                            </tbody>-->
-<!--                        </table>-->
-<!--                    </div>-->
+                    <!--                                </tr>-->
+                    <!--                            </tbody>-->
+                    <!--                        </table>-->
+                    <!--                    </div>-->
                 </el-col>
                 <el-col :span="24">
                     <Page :total_rows="total_rows" :batdau="trangbatdau" @pageChange="layLai($event)"></Page>

@@ -20,7 +20,7 @@
                             :placeholder="'Chọn'" filterable :data="list_don_vi_so" :fields="['name', 'value']" />
                     </div>
                 </el-col>
-                <el-col :sm="12" :md="12" :lg="6">
+                <el-col :sm="12" :md="12" :lg="6" v-if="namHoc<=2024">
                     <label>Tên quận huyện</label>
                     <el-input clearable v-model="tenQuanHuyen" @change="tenQuanHuyen = tenQuanHuyen.trim()"
                         placeholder="Nhập..." />

@@ -8,30 +8,32 @@
                     <el-col :span="24">
                         <div class="table-name">Thông tin tìm kiếm</div>
                     </el-col>
-                    <el-col :xs="24" :sm="24" :md="12" :lg="12">
-                        <label class="typo__label">Đơn vị quản lý</label>
-                        <eselect style="width:100%" collapseTags v-model="maPhongSelected" @change="chonCapHoc"
-                                 :disabled="thongtin.role!=2" :placeholder="'Chọn'" filterable :data="list_don_vi"
-                                 :fields="['name','value']" />
-                    </el-col>
-                    <el-col :xs="12" :sm="12" :md="12" :lg="6">
-                        <label class="typo__label">Cấp học</label>
-                        <el-tooltip content="Tham số cấp học chỉ hỗ trợ cho việc tra cứu danh sách trường học" placement="top">
-                            <a class="helpText"><i class="el-icon-info"></i></a>
-                        </el-tooltip>
-                        <eselect style="width:100%" multiple collapseTags v-model="capHoc" @change="chonCapHoc"
-                                 :disabled="thongtin.role==5" :placeholder="'Chọn'" filterable :data="list_cap_hoc"
-                                 :fields="['name','id']" />
-                    </el-col>
+
                     <el-col :xs="12" :sm="12" :md="6" :lg="6">
                         <label class="typo__label">Năm học <span style="color:#DC0101">*</span> </label>
                         <eselect style="width:100%" collapseTags v-model="namHoc" :placeholder="'Chọn'" filterable
-                                 :data="list_nam_hoc" :fields="['name','id']" />
+                            :data="list_nam_hoc" :fields="['name', 'id']" />
+                    </el-col>
+                    <el-col :xs="24" :sm="24" :md="12" :lg="12" v-if="namHoc<=2024">
+                        <label class="typo__label">Đơn vị quản lý</label>
+                        <eselect style="width:100%" collapseTags v-model="maPhongSelected" @change="chonCapHoc"
+                            :disabled="thongtin.role!=2" :placeholder="'Chọn'" filterable :data="list_don_vi"
+                            :fields="['name','value']" />
+                    </el-col>
+                    <el-col :xs="12" :sm="12" :md="12" :lg="6">
+                        <label class="typo__label">Cấp học</label>
+                        <el-tooltip content="Tham số cấp học chỉ hỗ trợ cho việc tra cứu danh sách trường học"
+                            placement="top">
+                            <a class="helpText"><i class="el-icon-info"></i></a>
+                        </el-tooltip>
+                        <eselect style="width:100%" multiple collapseTags v-model="capHoc" @change="chonCapHoc"
+                            :disabled="thongtin.role==5" :placeholder="'Chọn'" filterable :data="list_cap_hoc"
+                            :fields="['name','id']" />
                     </el-col>
                     <el-col :xs="24" :sm="24" :md="12" :lg="12">
                         <label class="typo__label">Trường học</label>
                         <eselect style="width:100%" collapseTags v-model="truongHoc" :disabled="thongtin.role==5"
-                                 :placeholder="'Chọn'" filterable :data="ds_truong_hoc" :fields="['name','value']" />
+                            :placeholder="'Chọn'" filterable :data="ds_truong_hoc" :fields="['name','value']" />
                     </el-col>
 
                     <el-col :span="24" class="text-center">
@@ -43,7 +45,7 @@
                 </el-row>
 
             </el-form>
-         
+
         </div>
         <div v-if="listCateReport.length>0" class="card-bieu-do" style="margin-top:16px">
             <el-row :gutter="24">
@@ -52,52 +54,52 @@
                         <el-tab-pane v-for="(nd,i) in listCateReport" :key="i" :label="nd.category">
                             <span slot="label"> {{ nd.category }}</span>
 
-                            <h4  class="title-18" style="margin-top: 5px;margin-bottom: 20px">Danh sách báo cáo EQMS</h4>
+                            <h4 class="title-18" style="margin-top: 5px;margin-bottom: 20px">Danh sách báo cáo EQMS</h4>
                             <div class="table-responsive">
-                                
-                            <table class="table table-bordered table-striped table-hover">
-                                <thead>
-                                    <tr style="background: #e4ebf5; text-align:center">
-                                        <th class="text-center">
-                                            <p>STT</p>
-                                        </th>
 
-                                        <th>
-                                            <p>Tên báo cáo</p>
-                                        </th>
-                                        <th>
-                                            <p>Mã báo cáo</p>
-                                        </th>
-                                        <th class="text-center">
-                                            <p>Thao tác</p>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody v-if="nd.children.length>0">
-                                    <tr v-for="(ndbc, index) in nd.children" :key="index">
-                                        <td class="text-center">
-                                            <p>{{ index + 1 }}</p>
-                                        </td>
+                                <table class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                        <tr style="background: #e4ebf5; text-align:center">
+                                            <th class="text-center">
+                                                <p>STT</p>
+                                            </th>
 
-                                        <td>
-                                            <p>
-                                                {{ ndbc.tenBaoCao }}</p>
-                                        </td>
-                                        <td class="">
-                                            <p>
-                                                {{ ndbc.maBaoCao }}</p>
-                                        </td>
-                                        <td class="text-center">
+                                            <th>
+                                                <p>Tên báo cáo</p>
+                                            </th>
+                                            <th>
+                                                <p>Mã báo cáo</p>
+                                            </th>
+                                            <th class="text-center">
+                                                <p>Thao tác</p>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody v-if="nd.children.length>0">
+                                        <tr v-for="(ndbc, index) in nd.children" :key="index">
+                                            <td class="text-center">
+                                                <p>{{ index + 1 }}</p>
+                                            </td>
 
-                                            <el-tooltip content="Xem báo cáo" placement="top">
-                                                <i @click.prevent="showInFo(ndbc)" :disabled="isDisabled"
-                                                   class="el-icon-view"></i>
-                                            </el-tooltip>
-                                            <el-tooltip content="Xuất excel" placement="top"
-                                                        v-if="thongtin.role!=20&&thongtin!=40">
-                                                <i @click.prevent="getExcel(ndbc)" class="el-icon-download"></i>
-                                            </el-tooltip>
-                                            <!-- <el-button size="mini" @click.prevent="showInFo(ndbc)"
+                                            <td>
+                                                <p>
+                                                    {{ ndbc.tenBaoCao }}</p>
+                                            </td>
+                                            <td class="">
+                                                <p>
+                                                    {{ ndbc.maBaoCao }}</p>
+                                            </td>
+                                            <td class="text-center">
+
+                                                <el-tooltip content="Xem báo cáo" placement="top">
+                                                    <i @click.prevent="showInFo(ndbc)" :disabled="isDisabled"
+                                                        class="el-icon-view"></i>
+                                                </el-tooltip>
+                                                <el-tooltip content="Xuất excel" placement="top"
+                                                    v-if="thongtin.role!=20&&thongtin!=40">
+                                                    <i @click.prevent="getExcel(ndbc)" class="el-icon-download"></i>
+                                                </el-tooltip>
+                                                <!-- <el-button size="mini" @click.prevent="showInFo(ndbc)"
                                                                :disabled="isDisabled" type="primary">
                                                         Xem báo cáo
                                                     </el-button>
@@ -105,17 +107,17 @@
                                                                @click.prevent="getExcel(ndbc)" type="primary">
                                                         Xuất excel
                                                     </el-button> -->
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                <tbody v-else>
-                                    <tr>
-                                        <td colspan="4" class="text-center">
-                                            <p>Không có danh sách báo cáo</p>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody v-else>
+                                        <tr>
+                                            <td colspan="4" class="text-center">
+                                                <p>Không có danh sách báo cáo</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
 
                         </el-tab-pane>

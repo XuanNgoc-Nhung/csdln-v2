@@ -10,6 +10,13 @@
                     <div class="table-name">Thông tin tìm kiếm</div>
                 </el-col>
                 <el-col :sm="12" :md="12" :lg="6">
+                    <label>Năm học <sup class="red">*</sup></label>
+                    <div>
+                        <eselect style="width:100%" collapseTags v-model="namHoc" :placeholder="'Chọn'" filterable
+                            :data="list_nam_hoc" :fields="['name', 'id']" />
+                    </div>
+                </el-col>
+                <el-col :sm="12" :md="12" :lg="6">
                     <label>Tỉnh thành</label>
                     <div>
                         <eselect style="width:100%" :disabled="thongtin.role>1" collapseTags v-model="maSo"
@@ -17,7 +24,7 @@
                             :fields="['name','value']" />
                     </div>
                 </el-col>
-                <el-col :sm="12" :md="12" :lg="6">
+                <el-col :sm="12" :md="12" :lg="6" v-if="namHoc<=2024">
                     <label>Quận huyện</label>
                     <div>
                         <eselect style="width:100%" :disabled="thongtin.role>3" collapseTags v-model="maQuanHuyen"
@@ -246,6 +253,7 @@
     import Import from './../pupupImportExcel/importChung.vue';
     import ESelectVue from '../../ui/ESelect.vue';
     import Breadcrumb from '../../ui/Breadcrumb.vue';
+    import constant from '../../../utils/constant';
 
     export default {
         components: {
@@ -265,6 +273,8 @@
                     pathTemplate: '/templateImport/Template_Xa_Phuong.xlsx'
                 },
                 thongtin: JSON.parse(window.userInfo),
+                namHoc: 0,
+                list_nam_hoc: constant.LIST_YEARS_FULL,
                 list_don_vi_so: [],
                 list_don_vi_huyen: [],
                 list_trang_thai: [{
@@ -331,10 +341,12 @@
                         message: 'Vui lòng nhập thông tin',
                         trigger: 'change'
                     }, ],
-                }
+                },
             }
         },
-        mounted() {
+    mounted() {
+            console.log('mounted danh mục phường xã');
+            
             if (this.thongtin.role == 4) {
                 this.maQuanHuyen = this.thongtin.ma_phong;
                 this.dataAddOrUpdate.maQuanHuyenAdd = this.thongtin.ma_phong;
@@ -345,6 +357,7 @@
                 this.getQuanHuyen();
                 this.getQuanHuyenAdd();
             }
+            this.namHoc = this.thongtin.namHocHienTai;
             this.getDonVi();
             // this.getData();
         },
@@ -698,6 +711,7 @@
                     "ten": this.tenPhuongXa,
                     "maTinhThanh": this.maSo,
                     "maQuanHuyen": this.maQuanHuyen,
+                    "namHoc": this.namHoc,
                 };
                 this.fullScreenLoading = true;
                 rest_api.get("/internal-api/dmPhuongXa/filter", params, (data) => {

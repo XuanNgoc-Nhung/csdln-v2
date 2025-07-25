@@ -1,8 +1,8 @@
 <template>
     <div>
-        
 
-        <Breadcrumb :menu="'Báo cáo'" :desc="'Tổng hợp dữ liệu báo cáo'"/>
+
+        <Breadcrumb :menu="'Báo cáo'" :desc="'Tổng hợp dữ liệu báo cáo'" />
         <div>
             <div class="card-bieu-do">
                 <el-form :model='dataSearch' :rules="rules" ref="ruleForm">
@@ -11,33 +11,32 @@
                             <div class="table-name">Thông tin tìm kiếm</div>
                         </el-col>
 
-                        <el-col :sm="24" :lg="12">
+                        <el-col :sm="12" :lg="6">
+                            <label class="typo__label">Năm học <span style="color:#DC0101">*</span> </label>
+                            <el-form-item prop="namHoc">
+                                <eselect style="width:100%" ref="namHoc" collapseTags v-model="dataSearch.namHoc"
+                                    :placeholder="'Chọn'" filterable :data="list_nam_hoc" :fields="['name', 'id']" />
+                            </el-form-item>
+                        </el-col>
+                        <el-col :sm="24" :lg="12" v-if="dataSearch.namHoc<=2024">
                             <label class="typo__label">Đơn vị quản lý </label>
                             <eselect style="width:100%" @change="layLaiTruong" :disabled="thongtin.role>2" multiple
-                                     collapseTags v-model="donVi" :placeholder="'Chọn'" filterable :data="list_don_vi"
-                                     :fields="['tenDonVi','maDonVi']" />
+                                collapseTags v-model="donVi" :placeholder="'Chọn'" filterable :data="list_don_vi"
+                                :fields="['tenDonVi','maDonVi']" />
                         </el-col>
                         <el-col :sm="12" :lg="6">
                             <label class="typo__label">Cấp học </label>
                             <eselect style="width:100%" @change="layLaiTruong" multiple collapseTags v-model="capHoc"
-                                     :placeholder="'Chọn'" filterable :data="danh_sach_cap_hoc_full"
-                                     :fields="['name','id']" />
-                        </el-col>
-                        <el-col :sm="12" :lg="6">
-                            <label class="typo__label">Năm học <span style="color:#DC0101">*</span> </label>
-
-                            <el-form-item prop="namHoc">
-                                <eselect style="width:100%" ref="namHoc" collapseTags v-model="dataSearch.namHoc"
-                                         :placeholder="'Chọn'" filterable :data="list_nam_hoc" :fields="['name','id']" />
-                            </el-form-item>
+                                :placeholder="'Chọn'" filterable :data="danh_sach_cap_hoc_full"
+                                :fields="['name','id']" />
                         </el-col>
                         <el-col :sm="24" :lg="12">
                             <label class="typo__label">Trường học <span style="color:#DC0101">*</span> </label>
 
                             <el-form-item prop="truongHoc">
                                 <eselect style="width:100%" ref="truongHoc" collapseTags v-model="dataSearch.truongHoc"
-                                         :placeholder="'Chọn'" filterable :data="list_truong_hoc"
-                                         :fields="['name','value']" />
+                                    :placeholder="'Chọn'" filterable :data="list_truong_hoc"
+                                    :fields="['name','value']" />
                             </el-form-item>
                         </el-col>
 
@@ -47,11 +46,13 @@
                     </el-row>
                     <div style="padding-bottom: 24px;padding-top: 5px">
                         <div class="text-center">
-                            <el-button class="bt-phu" size="mini" @click.prevent="submitForm('ruleForm',1)" type="primary">Kiểm tra
+                            <el-button class="bt-phu" size="mini" @click.prevent="submitForm('ruleForm',1)"
+                                type="primary">Kiểm tra
                                 quá
                                 trình tổng hợp
                             </el-button>
-                            <el-button size="mini" class="bt-chinh" @click.prevent="submitForm('ruleForm',2)" type="success">Tổng hợp
+                            <el-button size="mini" class="bt-chinh" @click.prevent="submitForm('ruleForm',2)"
+                                type="success">Tổng hợp
                             </el-button>
                         </div>
                     </div>

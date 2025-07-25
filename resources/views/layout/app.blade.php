@@ -1,5 +1,6 @@
 <?php
 $cate_menu = session("cate_menu", []);
+$token = session("token", "");
 $str = '';
 $tenDangNhap = get_user_info("fullName");
 $tenDacBiet = htmlspecialchars_decode($tenDangNhap, ENT_QUOTES);
@@ -41,6 +42,7 @@ function checkActiveMenu($current, $list_menu)
     dm.display_name = res;
     window.userInfo = JSON.stringify(dm);
     let dsch = '<?php echo($lch) ?>';
+    let token = '<?php echo($token) ?>';
     let dsch2 = JSON.parse(dsch)
     localStorage.setItem('list_cap_hoc', dsch);
     window.listCapHoc = dsch2;

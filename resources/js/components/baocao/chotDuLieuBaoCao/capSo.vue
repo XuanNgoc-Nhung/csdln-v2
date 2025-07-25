@@ -8,15 +8,15 @@
                     <el-tabs type="border-card2" @tab-click="handleTabClick">
                         <el-tab-pane label="Chốt theo đơn vị">
                             <div class="row">
-                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                    <label class="typo__label">Đơn vị</label>
-                                    <eselect collapseTags v-model="dataSearch.maPhong" :placeholder="'Chọn'" filterable
-                                        :data="list_don_vi_phong" :fields="['name','value']" />
-                                </div>
                                 <div class="col-xs-12 col-sm-4 col-md-2 col-lg-4">
                                     <label class="typo__label">Năm học</label>
                                     <eselect collapseTags v-model="dataSearch.namHoc" :placeholder="'Chọn'" filterable
-                                        :data="list_nam_hoc" :fields="['name','id']" />
+                                        :data="list_nam_hoc" :fields="['name', 'id']" />
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" v-if="dataSearch.namHoc<=2024">
+                                    <label class="typo__label">Đơn vị</label>
+                                    <eselect collapseTags v-model="dataSearch.maPhong" :placeholder="'Chọn'" filterable
+                                        :data="list_don_vi_phong" :fields="['name','value']" />
                                 </div>
                                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
                                     <span style="color:transparent;display:block; line-height:1.7">Tìm kiếm</span>
@@ -91,11 +91,11 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        
+
                                     </div>
                                     <el-col :span="24">
-                                        <Pagination :batdau="paginate.startPage"
-                                            :total_rows="paginate.total" @pageChange="layLaiDuLieu($event)">
+                                        <Pagination :batdau="paginate.startPage" :total_rows="paginate.total"
+                                            @pageChange="layLaiDuLieu($event)">
                                         </Pagination>
                                     </el-col>
                                 </div>
@@ -103,7 +103,13 @@
                         </el-tab-pane>
                         <el-tab-pane label="Chốt theo trường">
                             <div class="row">
-                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+
+                                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <label class="typo__label">Năm học</label>
+                                    <eselect collapseTags v-model="dataSearch.namHoc2" :placeholder="'Chọn'" filterable
+                                        :data="list_nam_hoc" :fields="['name', 'id']" />
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" v-if="dataSearch.namHoc2<=2024">
                                     <label class="typo__label">Đơn vị</label>
                                     <eselect collapseTags v-model="dataSearch.maPhong2" :placeholder="'Chọn'"
                                         @change="chonDonVi()" filterable :data="list_don_vi_phong"
@@ -114,15 +120,10 @@
                                     <eselect collapseTags v-model="dataSearch.capHocs" multiple @change="chonDonVi()"
                                         :placeholder="'Chọn'" filterable :data="list_cap_hoc" :fields="['name','id']" />
                                 </div>
-                                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" :style="{marginTop: dataSearch.namHoc2<=2024?'20px':'0px'}">
                                     <label class="typo__label">Trường học</label>
                                     <eselect collapseTags v-model="dataSearch.maTruongs" multiple :placeholder="'Chọn'"
                                         filterable :data="list_truong_hoc" :fields="['name','value']" />
-                                </div>
-                                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="padding-top:20px">
-                                    <label class="typo__label">Năm học</label>
-                                    <eselect collapseTags v-model="dataSearch.namHoc2" :placeholder="'Chọn'" filterable
-                                        :data="list_nam_hoc" :fields="['name','id']" />
                                 </div>
                                 <div class="col-md-12 text-center">
                                     <span style="color:transparent;display:block; line-height:1.7">Tìm kiếm</span>
@@ -169,7 +170,8 @@
                                             <tbody v-else>
                                                 <tr v-for="(item,i) in list_truong" :key="i">
                                                     <td class="text-center">
-                                                        <p>{{ (paginate_truong.curentPage - 1) * paginate_truong.limit + i + 1 }}
+                                                        <p>{{ (paginate_truong.curentPage - 1) * paginate_truong.limit +
+                                                            i + 1 }}
                                                         </p>
                                                     </td>
 
@@ -206,7 +208,8 @@
                                     </div>
                                     <el-col :span="24">
                                         <Pagination :batdau="paginate_truong.startPage"
-                                            :total_rows="paginate_truong.total" @pageChange="layLaiDuLieuTruong($event)">
+                                            :total_rows="paginate_truong.total"
+                                            @pageChange="layLaiDuLieuTruong($event)">
                                         </Pagination>
                                     </el-col>
                                 </div>
@@ -280,7 +283,9 @@
             // this.layDuLieuTheoTruong();
         },
         methods: {
-          
+            handleTabClick(tab, event) {
+                console.log(tab, event);
+            },
             chonDonVi() {
                 this.dataSearch.maTruongs = [];
                 this.getTruongHoc();

@@ -1,93 +1,79 @@
 <template>
     <div v-loading.fullscreen.lock="fullScreenLoading" element-loading-text="Loading..."
-         element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)">
+        element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)">
 
-        <Breadcrumb :menu="'Kết chuyển dữ liệu'" :desc="'Lịch sử đẩy dữ liệu lên Bộ'"/>
-            <div class="card-bieu-do">
-                <el-form ref="ruleForm">
-                    <el-row :gutter="24" style="margin-bottom:0px !important;" class="">
-                        <el-col :span="24">
-                            <div class="table-name">Thông tin tìm kiếm</div>
-                        </el-col>
-                        <el-col :md="16" :lg="12">
-                            <label class="typo__label">Đơn vị quản lý</label>
-                            <div>
-                                <eselect style="width:100%;" :disabled="thongtin.role>3" multiple collapseTags
-                                         v-model="ds_don_vi"
-                                         @change="ChonCapHoc()"
-                                         :placeholder="'Chọn'" filterable :data="list_don_vi"
-                                         :fields="['name','value']"/>
-                            </div>
-                        </el-col>
-                        <el-col :sm="12" :lg="6">
-                            <div>
-                                <label class="typo__label">Cấp học</label>
-                                <div>
-                                    <eselect style="width:100%;" :disabled="thongtin.role==5" @change="ChonCapHoc()" multiple collapseTags
-                                             v-model="ds_cap_hoc" :placeholder="'Chọn'" filterable :data="list_cap_hoc"
-                                             :fields="['name','id']"/>
-                                </div>
-                            </div>
-                        </el-col>
-                        <el-col :sm="12" :lg="6">
-                            <label class="typo__label">Năm học <span class="red">*</span></label>
-                            <eselect style="width:100%;" collapseTags v-model="namHoc" :placeholder="'Chọn'" filterable
-                                     :data="list_nam_hoc" :fields="['name','id']"/>
-                        </el-col>
-                        <el-col :md="16" :lg="12">
-                            <div>
-                                <label class="typo__label">Trường học</label>
-                                <eselect style="width:100%;" :disabled="thongtin.role==5" multiple collapseTags
-                                         v-model="ds_truong_hoc" :placeholder="'Chọn'" filterable
-                                         :data="list_truong_hoc"
-                                         :fields="['name','value']"/>
-                            </div>
-                        </el-col>
+        <Breadcrumb :menu="'Kết chuyển dữ liệu'" :desc="'Lịch sử đẩy dữ liệu lên Bộ'" />
+        <div class="card-bieu-do">
+            <el-form ref="ruleForm">
+                <el-row :gutter="24" style="margin-bottom:0px !important;" class="">
+                    <el-col :span="24">
+                        <div class="table-name">Thông tin tìm kiếm</div>
+                    </el-col>
 
-                        <el-col :sm="12" :lg="6">
-                            <label>Học kỳ <span class="red">*</span></label>
-                            <eselect style="width:100%;" collapseTags @change="ChonHocKy" v-model="hocKy"
-                                     :placeholder="'Chọn'"
-                                     filterable :data="list_hoc_ky" :fields="['name','id']"/>
-                        </el-col>
+                    <el-col :sm="12" :lg="6">
+                        <label class="typo__label">Năm học <span class="red">*</span></label>
+                        <eselect style="width:100%;" collapseTags v-model="namHoc" :placeholder="'Chọn'" filterable
+                            :data="list_nam_hoc" :fields="['name', 'id']" />
+                    </el-col>
+                    <el-col :sm="12" :lg="12" v-if="namHoc<=2024">
+                        <label class="typo__label">Đơn vị quản lý</label>
+                            <eselect style="width:100%;" :disabled="thongtin.role>3" multiple collapseTags
+                                v-model="ds_don_vi" @change="ChonCapHoc()" :placeholder="'Chọn'" filterable
+                                :data="list_don_vi" :fields="['name','value']" />
+                    </el-col>
+                    <el-col :sm="12" :lg="6">
+                            <label class="typo__label">Cấp học</label>
+                            <eselect style="width:100%;" :disabled="thongtin.role==5" @change="ChonCapHoc()"
+                                multiple collapseTags v-model="ds_cap_hoc" :placeholder="'Chọn'" filterable
+                                :data="list_cap_hoc" :fields="['name','id']" />
+                    </el-col>
+                    <el-col :sm="12" :lg="12">
+                            <label class="typo__label">Trường học</label>
+                            <eselect style="width:100%;" :disabled="thongtin.role==5" multiple collapseTags
+                                v-model="ds_truong_hoc" :placeholder="'Chọn'" filterable :data="list_truong_hoc"
+                                :fields="['name','value']" />
+                    </el-col>
 
-                        <el-col :sm="12" :lg="6">
-                            <label>Giai đoạn</label>
-                            <eselect style="width:100%;" collapseTags v-model="giaiDoanKqht" :placeholder="'Chọn'"
-                                     filterable
-                                     :data="list_giai_doan" :fields="['name','value']"/>
-                        </el-col>
+                    <el-col :sm="12" :lg="6">
+                        <label>Học kỳ <span class="red">*</span></label>
+                        <eselect style="width:100%;" collapseTags @change="ChonHocKy" v-model="hocKy"
+                            :placeholder="'Chọn'" filterable :data="list_hoc_ky" :fields="['name','id']" />
+                    </el-col>
 
-                        <el-col :sm="12" :lg="6">
-                            <label class="typo__label">Đối tác</label>
-                            <eselect style="width:100%;" multiple collapseTags v-model="ds_doi_tac"
-                                     :placeholder="'Chọn'" filterable
-                                     :data="list_doi_tac" :fields="['tenDoiTac','maDoiTac']"/>
-                        </el-col>
-                        <el-col :sm="12" :lg="6">
-                            <label class="typo__label">Loại dữ liệu</label>
-                            <eselect style="width:100%;" collapseTags v-model="ds_yeu_cau" :placeholder="'Chọn'"
-                                     filterable
-                                     :data="list_yeu_cau" :fields="['name','key']"/>
-                        </el-col>
-                        <el-col :sm="12" :lg="6">
-                            <label class="typo__label">Trạng thái</label>
-                            <eselect style="width:100%;" collapseTags v-model="ds_trang_thai" :placeholder="'Chọn'"
-                                     filterable
-                                     :data="list_trang_thai" :fields="['name','id']"/>
-                        </el-col>
-                        <el-col :span="24" class="text-center">
-                            <el-button class="bt-chinh" plain type="success" size="mini" @click.prevent="checkTruocKhiTimKiem()">Tìm kiếm
-                            </el-button>
-                        </el-col>
+                    <el-col :sm="12" :lg="6">
+                        <label>Giai đoạn</label>
+                        <eselect style="width:100%;" collapseTags v-model="giaiDoanKqht" :placeholder="'Chọn'"
+                            filterable :data="list_giai_doan" :fields="['name','value']" />
+                    </el-col>
 
-                    </el-row>
-                </el-form>
-            
-            </div>
-            <div class="card-bieu-do">
-                <el-row :gutter="24">
-                    <!-- <el-col :span="12">
+                    <el-col :sm="12" :lg="6">
+                        <label class="typo__label">Đối tác</label>
+                        <eselect style="width:100%;" multiple collapseTags v-model="ds_doi_tac" :placeholder="'Chọn'"
+                            filterable :data="list_doi_tac" :fields="['tenDoiTac','maDoiTac']" />
+                    </el-col>
+                    <el-col :sm="12" :lg="6">
+                        <label class="typo__label">Loại dữ liệu</label>
+                        <eselect style="width:100%;" collapseTags v-model="ds_yeu_cau" :placeholder="'Chọn'" filterable
+                            :data="list_yeu_cau" :fields="['name','key']" />
+                    </el-col>
+                    <el-col :sm="12" :lg="6">
+                        <label class="typo__label">Trạng thái</label>
+                        <eselect style="width:100%;" collapseTags v-model="ds_trang_thai" :placeholder="'Chọn'"
+                            filterable :data="list_trang_thai" :fields="['name','id']" />
+                    </el-col>
+                    <el-col :span="24" class="text-center">
+                        <el-button class="bt-chinh" plain type="success" size="mini"
+                            @click.prevent="checkTruocKhiTimKiem()">Tìm kiếm
+                        </el-button>
+                    </el-col>
+
+                </el-row>
+            </el-form>
+
+        </div>
+        <div class="card-bieu-do">
+            <el-row :gutter="24">
+                <!-- <el-col :span="12">
                         <label class="table-name">Danh sách trường đẩy dữ liệu lên Bộ</label>
                         <p v-if="false">
                             <b>Ghi chú: </b> KQHT chỉ đẩy học sinh ở trạng thái đang học.
@@ -108,280 +94,276 @@
                             </el-tooltip>
                         </div>
                     </el-col> -->
-                    <el-col :span="24">
-                        <div class="centerBetweenFlex">
-                            <label class="table-name">Danh sách trường đẩy dữ liệu lên Bộ</label>
-                            <div class="text-right">
-                                <span style="padding-right:20px" v-if="lsDelete.length"><b>Đã chọn
+                <el-col :span="24">
+                    <div class="centerBetweenFlex">
+                        <label class="table-name">Danh sách trường đẩy dữ liệu lên Bộ</label>
+                        <div class="text-right">
+                            <span style="padding-right:20px" v-if="lsDelete.length"><b>Đã chọn
                                     {{ lsDelete.length }} bản ghi</b></span>
                             <el-tooltip content="Đẩy lại dữ liệu lên bộ " placement="top">
-                                <el-button class="bt-phu" type="primary" size="mini" v-if="hienthibutton&&lsDelete.length"
-                                           @click.prevent="dayLai()">Đẩy lại
+                                <el-button class="bt-phu" type="primary" size="mini"
+                                    v-if="hienthibutton&&lsDelete.length" @click.prevent="dayLai()">Đẩy lại
                                 </el-button>
                             </el-tooltip>
                             <el-tooltip content="Xuất dữ liệu " placement="top">
-                                <el-button class="bt-chinh" type="success" size="mini" @click.prevent="XuatExcel()">Xuất excel
+                                <el-button class="bt-chinh" type="success" size="mini" @click.prevent="XuatExcel()">Xuất
+                                    excel
                                 </el-button>
                             </el-tooltip>
-                            </div>
                         </div>
-                    </el-col>
-                    <el-col :span="24">
+                    </div>
+                </el-col>
+                <el-col :span="24">
 
-                        <el-table max-height="700" :data="listKetChuyen" fit border style="width: 100%" empty-text="Chưa có dữ liệu">
-                            <!-- Header Row 1 -->
-                            <el-table-column
-                                    v-if="hienthibutton && listKetChuyen.length"
-                                    width="40"
-                                    align="center"
-                                    fixed="left"
-                            >
-                                <template #header>
-                                    <input type="checkbox" v-model="slectAll" />
-                                </template>
+                    <el-table max-height="700" :data="listKetChuyen" fit border style="width: 100%"
+                        empty-text="Chưa có dữ liệu">
+                        <!-- Header Row 1 -->
+                        <el-table-column v-if="hienthibutton && listKetChuyen.length" width="40" align="center"
+                            fixed="left">
+                            <template #header>
+                                <input type="checkbox" v-model="slectAll" />
+                            </template>
+                            <template #default="{ row }">
+                                <input type="checkbox" v-model="lsDelete" :value="row.id" />
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="STT" :width="start > 9999 ? 70 : 60" align="center"
+                            :fixed="listKetChuyen.length && windowWidth > 1200 ? 'left' : false">
+                            <template #default="{ $index }">
+                                {{ (currentPage - 1) * limit + $index + 1 }}
+                            </template>
+                        </el-table-column>
+
+
+                        <!-- Other Columns -->
+                        <el-table-column label="Tên trường" :min-width="columnWidths['tenTruong']"
+                            :fixed="listKetChuyen.length && windowWidth > 1200 ? 'left' : false">
+                            <template #default="{ row }">{{ row.tenTruong }}</template>
+                        </el-table-column>
+                        <el-table-column label="Mã trường" :min-width="columnWidths['maTruong']">
+                            <template #default="{ row }">{{ row.maTruong }}</template>
+                        </el-table-column>
+                        <el-table-column label="Cấp học" width="100">
+                            <template #default="{ row }">{{ getCapHoc(row.capHoc) }}</template>
+                        </el-table-column>
+                        <el-table-column label="Đối tác" :min-width="columnWidths['maDoiTac']">
+                            <template #default="{ row }">{{ row.maDoiTac }}</template>
+                        </el-table-column>
+                        <el-table-column label="Năm học" align="center" width="110">
+                            <template #default="{ row }">
+                                {{ row.namHoc }}-{{ parseInt(row.namHoc) + 1 }}
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="Học kỳ" align="center" width="100">
+                            <template #default="{ row }">
+                                <p v-if="row.hocKy == 1">Học kỳ I</p>
+                                <p v-else-if="row.hocKy == 2">Học kỳ II</p>
+                                <p v-else-if="row.hocKy == 3">Cả năm</p>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="Giai đoạn" width="100">
+                            <template #default="{ row }">
+                                <p v-if="row.maGiaiDoan == 'GK1'">Giữa kỳ I</p>
+                                <p v-else-if="row.maGiaiDoan == 'GK2'">Giữa kỳ II</p>
+                                <p v-else-if="row.maGiaiDoan == 'CK1'">Cuối kỳ I</p>
+                                <p v-else-if="row.maGiaiDoan == 'CK2'">Cuối kỳ II</p>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="Loại dữ liệu" width="150">
+                            <template #default="{ row }">{{ getBuocHienTai(row.buocHienTai) }}</template>
+                        </el-table-column>
+                        <el-table-column label="Thời gian đẩy" width="150">
+                            <template #default="{ row }">{{ row.timeStart }}</template>
+                        </el-table-column>
+                        <el-table-column label="Trạng thái" min-width="320">
+                            <template #default="{ row }">
+                                <p class="bd-stt" :style="{ backgroundColor: getBackGround(row.trangThai) }">
+                                    {{ getTrangThaiDay(row.trangThai) }}
+                                </p>
+                            </template>
+                        </el-table-column>
+
+                        <!-- Subheader: "Bản ghi" -->
+                        <el-table-column label="Bản ghi" align="center" colspan="4">
+                            <el-table-column label="Nhận từ QLNT" align="right" width="130">
+                                <template #default="{ row }">{{ row.banGhiNhan }}</template>
+                            </el-table-column>
+                            <el-table-column label="Đẩy lên bộ" align="right" width="110">
+                                <template #default="{ row }">{{ row.banGhiGui }}</template>
+                            </el-table-column>
+                            <el-table-column label="Thành công" align="right" width="120">
+                                <template #default="{ row }">{{ row.tongThanhCong }}</template>
+                            </el-table-column>
+                            <el-table-column label="Thất bại" align="right" width="100">
                                 <template #default="{ row }">
-                                    <input type="checkbox" v-model="lsDelete" :value="row.id" />
+                                    {{ row.tongThatBai + row.tongHopLoi }}
                                 </template>
                             </el-table-column>
-                            <el-table-column label="STT"  :width="start > 9999 ? 70 : 60" align="center"   :fixed="listKetChuyen.length && windowWidth > 1200 ? 'left' : false">
-                                <template #default="{ $index }">
-                                    {{ (currentPage - 1) * limit + $index + 1 }}
-                                </template>
-                            </el-table-column>
+                        </el-table-column>
 
+                        <el-table-column label="Mã lỗi và Mô tả" min-width="200">
+                            <template #default="{ row }">
+                                <p v-if="row.error">{{ row.error }} / {{ row.errorDescription }}</p>
+                            </template>
+                        </el-table-column>
 
-                            <!-- Other Columns -->
-                            <el-table-column label="Tên trường" :min-width="columnWidths['tenTruong']"    :fixed="listKetChuyen.length && windowWidth > 1200 ? 'left' : false">
-                                <template #default="{ row }">{{ row.tenTruong }}</template>
-                            </el-table-column>
-                            <el-table-column label="Mã trường" :min-width="columnWidths['maTruong']">
-                                <template #default="{ row }">{{ row.maTruong }}</template>
-                            </el-table-column>
-                            <el-table-column label="Cấp học" width="100">
-                                <template #default="{ row }">{{ getCapHoc(row.capHoc) }}</template>
-                            </el-table-column>
-                            <el-table-column label="Đối tác" :min-width="columnWidths['maDoiTac']">
-                                <template #default="{ row }">{{ row.maDoiTac }}</template>
-                            </el-table-column>
-                            <el-table-column label="Năm học" align="center" width="110">
-                                <template #default="{ row }">
-                                    {{ row.namHoc }}-{{ parseInt(row.namHoc) + 1 }}
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="Học kỳ" align="center" width="100">
-                                <template #default="{ row }">
-                                    <p v-if="row.hocKy == 1">Học kỳ I</p>
-                                    <p v-else-if="row.hocKy == 2">Học kỳ II</p>
-                                    <p v-else-if="row.hocKy == 3">Cả năm</p>
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="Giai đoạn" width="100">
-                                <template #default="{ row }">
-                                    <p v-if="row.maGiaiDoan == 'GK1'">Giữa kỳ I</p>
-                                    <p v-else-if="row.maGiaiDoan == 'GK2'">Giữa kỳ II</p>
-                                    <p v-else-if="row.maGiaiDoan == 'CK1'">Cuối kỳ I</p>
-                                    <p v-else-if="row.maGiaiDoan == 'CK2'">Cuối kỳ II</p>
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="Loại dữ liệu" width="150">
-                                <template #default="{ row }">{{ getBuocHienTai(row.buocHienTai) }}</template>
-                            </el-table-column>
-                            <el-table-column label="Thời gian đẩy" width="150">
-                                <template #default="{ row }">{{ row.timeStart }}</template>
-                            </el-table-column>
-                            <el-table-column label="Trạng thái" min-width="320">
-                                <template #default="{ row }">
-                                    <p class="bd-stt" :style="{ backgroundColor: getBackGround(row.trangThai) }">
-                                        {{ getTrangThaiDay(row.trangThai) }}
-                                    </p>
-                                </template>
-                            </el-table-column>
+                        <el-table-column label="Thao tác" width="90" align="center" fixed="right">
+                            <template #default="{ row }">
+                                <a v-if="row.tongThatBai + row.tongHopLoi > 0" href="#" title="Xem bản ghi lỗi"
+                                    @click.prevent="showInfo(row)">
+                                    <i class="el-icon-view"></i>
+                                </a>
+                            </template>
+                        </el-table-column>
+                    </el-table>
 
-                            <!-- Subheader: "Bản ghi" -->
-                            <el-table-column label="Bản ghi" align="center" colspan="4">
-                                <el-table-column label="Nhận từ QLNT" align="right" width="130">
-                                    <template #default="{ row }">{{ row.banGhiNhan }}</template>
-                                </el-table-column>
-                                <el-table-column label="Đẩy lên bộ" align="right" width="110">
-                                    <template #default="{ row }">{{ row.banGhiGui }}</template>
-                                </el-table-column>
-                                <el-table-column label="Thành công" align="right" width="120">
-                                    <template #default="{ row }">{{ row.tongThanhCong }}</template>
-                                </el-table-column>
-                                <el-table-column label="Thất bại" align="right" width="100">
-                                    <template #default="{ row }">
-                                        {{ row.tongThatBai + row.tongHopLoi }}
-                                    </template>
-                                </el-table-column>
-                            </el-table-column>
+                    <!--                        <div class="table-responsive">-->
+                    <!--                            <table class="table table-striped table-bordered table-hover">-->
+                    <!--                                <thead>-->
+                    <!--                                <tr style="background:#e4ebf5">-->
 
-                            <el-table-column label="Mã lỗi và Mô tả" min-width="200">
-                                <template #default="{ row }">
-                                    <p v-if="row.error">{{ row.error }} / {{ row.errorDescription }}</p>
-                                </template>
-                            </el-table-column>
+                    <!--                                    <th rowspan="2" class="text-center cg fixed-column fixedCol1"-->
+                    <!--                                        v-if="hienthibutton">-->
+                    <!--                                        <input type="checkbox" v-model="slectAll">-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" class="text-center cg fixed-column fixedCol2">-->
+                    <!--                                        <p>STT</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" class="text-center cg fixed-column fixedCol3">-->
+                    <!--                                        <p>Thao tác</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" >-->
+                    <!--                                        <p>Tên trường</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" >-->
+                    <!--                                        <p>Mã trường</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" >-->
+                    <!--                                        <p>Cấp học</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" >-->
+                    <!--                                        <p>Đối tác</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" class="text-center cg">-->
+                    <!--                                        <p>Năm học</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" class="text-center cg">-->
+                    <!--                                        <p>Học kỳ</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" >-->
+                    <!--                                        <p>Giai đoạn</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" >-->
+                    <!--                                        <p>Loại dữ liệu</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" class="text-center cg">-->
+                    <!--                                        <p>Thời gian đẩy</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" >-->
+                    <!--                                        <p>Trạng thái</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th colspan="4" class="text-center cg">-->
+                    <!--                                        <p>Bản ghi</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th rowspan="2" >-->
+                    <!--                                        <p>Mã lỗi và Mô tả</p>-->
+                    <!--                                    </th>-->
+                    <!--                                </tr>-->
+                    <!--                                <tr style="background:#e4ebf5">-->
+                    <!--                                    <th class="text-center">-->
+                    <!--                                        <p>Nhận từ QLNT</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th class="text-center">-->
+                    <!--                                        <p>Đẩy lên bộ <span style="color:#DC0101">*</span></p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th class="text-center">-->
+                    <!--                                        <p>Thành công</p>-->
+                    <!--                                    </th>-->
+                    <!--                                    <th class="text-center">-->
+                    <!--                                        <p>Thất bại</p>-->
+                    <!--                                    </th>-->
+                    <!--                                </tr>-->
+                    <!--                                </thead>-->
+                    <!--                                <tbody v-if="listKetChuyen.length===0">-->
+                    <!--                                <tr>-->
+                    <!--                                    <td class="text-center" colspan="18">Không có dữ-->
+                    <!--                                        liệu phù hợp-->
+                    <!--                                    </td>-->
+                    <!--                                </tr>-->
+                    <!--                                </tbody>-->
+                    <!--                                <tbody v-else="v-else">-->
+                    <!--                                <tr v-for="(px,index) in listKetChuyen">-->
 
-                            <el-table-column label="Thao tác" width="90" align="center" fixed="right">
-                                <template #default="{ row }">
-                                    <a
-                                            v-if="row.tongThatBai + row.tongHopLoi > 0"
-                                            href="#"
-                                            title="Xem bản ghi lỗi"
-                                            @click.prevent="showInfo(row)"
-                                    >
-                                        <i class="el-icon-view"></i>
-                                    </a>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-
-<!--                        <div class="table-responsive">-->
-<!--                            <table class="table table-striped table-bordered table-hover">-->
-<!--                                <thead>-->
-<!--                                <tr style="background:#e4ebf5">-->
-
-<!--                                    <th rowspan="2" class="text-center cg fixed-column fixedCol1"-->
-<!--                                        v-if="hienthibutton">-->
-<!--                                        <input type="checkbox" v-model="slectAll">-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" class="text-center cg fixed-column fixedCol2">-->
-<!--                                        <p>STT</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" class="text-center cg fixed-column fixedCol3">-->
-<!--                                        <p>Thao tác</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" >-->
-<!--                                        <p>Tên trường</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" >-->
-<!--                                        <p>Mã trường</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" >-->
-<!--                                        <p>Cấp học</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" >-->
-<!--                                        <p>Đối tác</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" class="text-center cg">-->
-<!--                                        <p>Năm học</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" class="text-center cg">-->
-<!--                                        <p>Học kỳ</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" >-->
-<!--                                        <p>Giai đoạn</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" >-->
-<!--                                        <p>Loại dữ liệu</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" class="text-center cg">-->
-<!--                                        <p>Thời gian đẩy</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" >-->
-<!--                                        <p>Trạng thái</p>-->
-<!--                                    </th>-->
-<!--                                    <th colspan="4" class="text-center cg">-->
-<!--                                        <p>Bản ghi</p>-->
-<!--                                    </th>-->
-<!--                                    <th rowspan="2" >-->
-<!--                                        <p>Mã lỗi và Mô tả</p>-->
-<!--                                    </th>-->
-<!--                                </tr>-->
-<!--                                <tr style="background:#e4ebf5">-->
-<!--                                    <th class="text-center">-->
-<!--                                        <p>Nhận từ QLNT</p>-->
-<!--                                    </th>-->
-<!--                                    <th class="text-center">-->
-<!--                                        <p>Đẩy lên bộ <span style="color:#DC0101">*</span></p>-->
-<!--                                    </th>-->
-<!--                                    <th class="text-center">-->
-<!--                                        <p>Thành công</p>-->
-<!--                                    </th>-->
-<!--                                    <th class="text-center">-->
-<!--                                        <p>Thất bại</p>-->
-<!--                                    </th>-->
-<!--                                </tr>-->
-<!--                                </thead>-->
-<!--                                <tbody v-if="listKetChuyen.length===0">-->
-<!--                                <tr>-->
-<!--                                    <td class="text-center" colspan="18">Không có dữ-->
-<!--                                        liệu phù hợp-->
-<!--                                    </td>-->
-<!--                                </tr>-->
-<!--                                </tbody>-->
-<!--                                <tbody v-else="v-else">-->
-<!--                                <tr v-for="(px,index) in listKetChuyen">-->
-
-<!--                                    <td class="text-center fixed-column fixedCol1" v-if="hienthibutton">-->
-<!--                                        <input type="checkbox" v-model="lsDelete" :value="px.id">-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center fixed-column fixedCol2">-->
-<!--                                        {{ (currentPage - 1) * limit + index + 1 }}-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center fixed-column fixedCol3"-->
-<!--                                        style="text-align:center">-->
-<!--                                        <a v-if="(px.tongThatBai+px.tongHopLoi > 0 )" href="#"-->
-<!--                                           title="Xem bản ghi lỗi" v-on:click.prevent="showInfo(px)">-->
-<!--                                            <i class="el-icon-view"></i>-->
-<!--                                        </a>-->
-<!--                                    </td>-->
-<!--                                    <td>{{ px.tenTruong }}</td>-->
-<!--                                    <td>{{ px.maTruong }}</td>-->
-<!--                                    <td>{{ getCapHoc(px.capHoc) }}</td>-->
-<!--                                    <td>{{ px.maDoiTac }}</td>-->
-<!--                                    <td>{{ px.namHoc }}-{{ parseInt(px.namHoc) + 1 }}</td>-->
-<!--                                    <td>-->
-<!--                                        <p v-if="px.hocKy==1">Học kỳ I</p>-->
-<!--                                        <p v-if="px.hocKy==2">Học kỳ II</p>-->
-<!--                                        <p v-if="px.hocKy==3">Cả năm</p>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <p v-if="px.maGiaiDoan=='GK1'">Giữa kỳ I</p>-->
-<!--                                        <p v-if="px.maGiaiDoan=='GK2'">Giữa kỳ II</p>-->
-<!--                                        <p v-if="px.maGiaiDoan=='CK1'">Cuối kỳ I</p>-->
-<!--                                        <p v-if="px.maGiaiDoan=='CK2'">Cuối kỳ II</p>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <p>{{ getBuocHienTai(px.buocHienTai) }}</p>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center">-->
-<!--                                        <p>-->
-<!--                                            {{ px.timeStart }}-->
-<!--                                        </p>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <p v-bind:style="{ backgroundColor: getBackGround(px.trangThai) }"-->
-<!--                                           class="bd-stt">{{ getTrangThaiDay(px.trangThai) }}</p>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center">-->
-<!--                                        <p>{{ px.banGhiNhan }}</p>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center">-->
-<!--                                        <p>{{ px.banGhiGui }}</p>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center">-->
-<!--                                        <p>{{ px.tongThanhCong }}</p>-->
-<!--                                    </td>-->
-<!--                                    <td class="text-center">-->
-<!--                                        <p>{{ px.tongThatBai + px.tongHopLoi }}</p>-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <p v-if="px.error">{{ px.error }} / {{ px.errorDescription }}</p>-->
-<!--                                    </td>-->
-<!--                                </tr>-->
-<!--                                </tbody>-->
-<!--                            </table>-->
-<!--                        </div>-->
-                    </el-col>
-                    <el-col :span="24">
-                        <Page :total_rows="total_rows" :batdau="trangbatdau" @pageChange="layLai($event)">
-                        </Page>
-                        <!-- <template v-if="show_info"> -->
-                        <ThongTin :show="show_info" :item="idBanGhi" @success="onCreatedData($event)"
-                                  @close="show_info=false"></ThongTin>
-                    </el-col>
-                </el-row>
-            </div>
+                    <!--                                    <td class="text-center fixed-column fixedCol1" v-if="hienthibutton">-->
+                    <!--                                        <input type="checkbox" v-model="lsDelete" :value="px.id">-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center fixed-column fixedCol2">-->
+                    <!--                                        {{ (currentPage - 1) * limit + index + 1 }}-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center fixed-column fixedCol3"-->
+                    <!--                                        style="text-align:center">-->
+                    <!--                                        <a v-if="(px.tongThatBai+px.tongHopLoi > 0 )" href="#"-->
+                    <!--                                           title="Xem bản ghi lỗi" v-on:click.prevent="showInfo(px)">-->
+                    <!--                                            <i class="el-icon-view"></i>-->
+                    <!--                                        </a>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td>{{ px.tenTruong }}</td>-->
+                    <!--                                    <td>{{ px.maTruong }}</td>-->
+                    <!--                                    <td>{{ getCapHoc(px.capHoc) }}</td>-->
+                    <!--                                    <td>{{ px.maDoiTac }}</td>-->
+                    <!--                                    <td>{{ px.namHoc }}-{{ parseInt(px.namHoc) + 1 }}</td>-->
+                    <!--                                    <td>-->
+                    <!--                                        <p v-if="px.hocKy==1">Học kỳ I</p>-->
+                    <!--                                        <p v-if="px.hocKy==2">Học kỳ II</p>-->
+                    <!--                                        <p v-if="px.hocKy==3">Cả năm</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td>-->
+                    <!--                                        <p v-if="px.maGiaiDoan=='GK1'">Giữa kỳ I</p>-->
+                    <!--                                        <p v-if="px.maGiaiDoan=='GK2'">Giữa kỳ II</p>-->
+                    <!--                                        <p v-if="px.maGiaiDoan=='CK1'">Cuối kỳ I</p>-->
+                    <!--                                        <p v-if="px.maGiaiDoan=='CK2'">Cuối kỳ II</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td>-->
+                    <!--                                        <p>{{ getBuocHienTai(px.buocHienTai) }}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <p>-->
+                    <!--                                            {{ px.timeStart }}-->
+                    <!--                                        </p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td>-->
+                    <!--                                        <p v-bind:style="{ backgroundColor: getBackGround(px.trangThai) }"-->
+                    <!--                                           class="bd-stt">{{ getTrangThaiDay(px.trangThai) }}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <p>{{ px.banGhiNhan }}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <p>{{ px.banGhiGui }}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <p>{{ px.tongThanhCong }}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td class="text-center">-->
+                    <!--                                        <p>{{ px.tongThatBai + px.tongHopLoi }}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                    <td>-->
+                    <!--                                        <p v-if="px.error">{{ px.error }} / {{ px.errorDescription }}</p>-->
+                    <!--                                    </td>-->
+                    <!--                                </tr>-->
+                    <!--                                </tbody>-->
+                    <!--                            </table>-->
+                    <!--                        </div>-->
+                </el-col>
+                <el-col :span="24">
+                    <Page :total_rows="total_rows" :batdau="trangbatdau" @pageChange="layLai($event)">
+                    </Page>
+                    <!-- <template v-if="show_info"> -->
+                    <ThongTin :show="show_info" :item="idBanGhi" @success="onCreatedData($event)"
+                        @close="show_info=false"></ThongTin>
+                </el-col>
+            </el-row>
+        </div>
 
 
 
@@ -400,12 +382,13 @@
                                     <span style="padding-right:20px" v-if="lsDelete.length"><b>Đã chọn
                                             {{ lsDelete.length }} bản ghi</b></span>
                                     <el-tooltip content="Đẩy lại dữ liệu lên bộ " placement="top">
-                                        <el-button class="bt-phu" type="primary" size="mini" v-if="hienthibutton&&lsDelete.length"
-                                                   @click.prevent="dayLai()">Đẩy lại
+                                        <el-button class="bt-phu" type="primary" size="mini"
+                                            v-if="hienthibutton&&lsDelete.length" @click.prevent="dayLai()">Đẩy lại
                                         </el-button>
                                     </el-tooltip>
                                     <el-tooltip content="Xuất dữ liệu " placement="top">
-                                        <el-button class="bt-chinh" type="success" size="mini" @click.prevent="XuatExcel()">Xuất excel
+                                        <el-button class="bt-chinh" type="success" size="mini"
+                                            @click.prevent="XuatExcel()">Xuất excel
                                         </el-button>
                                     </el-tooltip>
                                 </div>
@@ -415,137 +398,137 @@
                                 <div class="table-responsive row_tp">
                                     <table class="table table-striped table-bordered table-hover">
                                         <thead>
-                                        <tr style="background:#e4ebf5">
+                                            <tr style="background:#e4ebf5">
 
-                                            <th rowspan="2" class="text-center cg fixed-column fixedCol1"
-                                                v-if="hienthibutton">
-                                                <input type="checkbox" v-model="slectAll">
-                                            </th>
-                                            <th rowspan="2" class="text-center cg fixed-column fixedCol2">
-                                                <p>STT</p>
-                                            </th>
-                                            <th rowspan="2" class="text-center cg fixed-column fixedCol3">
-                                                <p>Thao tác</p>
-                                            </th>
-                                            <th rowspan="2" >
-                                                <p>Tên trường</p>
-                                            </th>
-                                            <th rowspan="2" >
-                                                <p>Mã trường</p>
-                                            </th>
-                                            <th rowspan="2" >
-                                                <p>Cấp học</p>
-                                            </th>
-                                            <th rowspan="2" >
-                                                <p>Đối tác</p>
-                                            </th>
-                                            <th rowspan="2" class="text-center cg">
-                                                <p>Năm học</p>
-                                            </th>
-                                            <th rowspan="2" class="text-center cg">
-                                                <p>Học kỳ</p>
-                                            </th>
-                                            <th rowspan="2" >
-                                                <p>Giai đoạn</p>
-                                            </th>
-                                            <th rowspan="2" >
-                                                <p>Loại dữ liệu</p>
-                                            </th>
-                                            <th rowspan="2" class="text-center cg">
-                                                <p>Thời gian đẩy</p>
-                                            </th>
-                                            <th rowspan="2" >
-                                                <p>Trạng thái</p>
-                                            </th>
-                                            <th colspan="4" class="text-center cg">
-                                                <p>Bản ghi</p>
-                                            </th>
-                                            <th rowspan="2" >
-                                                <p>Mã lỗi và Mô tả</p>
-                                            </th>
-                                        </tr>
-                                        <tr style="background:#e4ebf5">
-                                            <th class="text-center">
-                                                <p>Nhận từ QLNT</p>
-                                            </th>
-                                            <th class="text-center">
-                                                <p>Đẩy lên bộ <span style="color:#DC0101">*</span></p>
-                                            </th>
-                                            <th class="text-center">
-                                                <p>Thành công</p>
-                                            </th>
-                                            <th class="text-center">
-                                                <p>Thất bại</p>
-                                            </th>
-                                        </tr>
+                                                <th rowspan="2" class="text-center cg fixed-column fixedCol1"
+                                                    v-if="hienthibutton">
+                                                    <input type="checkbox" v-model="slectAll">
+                                                </th>
+                                                <th rowspan="2" class="text-center cg fixed-column fixedCol2">
+                                                    <p>STT</p>
+                                                </th>
+                                                <th rowspan="2" class="text-center cg fixed-column fixedCol3">
+                                                    <p>Thao tác</p>
+                                                </th>
+                                                <th rowspan="2">
+                                                    <p>Tên trường</p>
+                                                </th>
+                                                <th rowspan="2">
+                                                    <p>Mã trường</p>
+                                                </th>
+                                                <th rowspan="2">
+                                                    <p>Cấp học</p>
+                                                </th>
+                                                <th rowspan="2">
+                                                    <p>Đối tác</p>
+                                                </th>
+                                                <th rowspan="2" class="text-center cg">
+                                                    <p>Năm học</p>
+                                                </th>
+                                                <th rowspan="2" class="text-center cg">
+                                                    <p>Học kỳ</p>
+                                                </th>
+                                                <th rowspan="2">
+                                                    <p>Giai đoạn</p>
+                                                </th>
+                                                <th rowspan="2">
+                                                    <p>Loại dữ liệu</p>
+                                                </th>
+                                                <th rowspan="2" class="text-center cg">
+                                                    <p>Thời gian đẩy</p>
+                                                </th>
+                                                <th rowspan="2">
+                                                    <p>Trạng thái</p>
+                                                </th>
+                                                <th colspan="4" class="text-center cg">
+                                                    <p>Bản ghi</p>
+                                                </th>
+                                                <th rowspan="2">
+                                                    <p>Mã lỗi và Mô tả</p>
+                                                </th>
+                                            </tr>
+                                            <tr style="background:#e4ebf5">
+                                                <th class="text-center">
+                                                    <p>Nhận từ QLNT</p>
+                                                </th>
+                                                <th class="text-center">
+                                                    <p>Đẩy lên bộ <span style="color:#DC0101">*</span></p>
+                                                </th>
+                                                <th class="text-center">
+                                                    <p>Thành công</p>
+                                                </th>
+                                                <th class="text-center">
+                                                    <p>Thất bại</p>
+                                                </th>
+                                            </tr>
                                         </thead>
                                         <tbody v-if="listKetChuyen.length===0">
-                                        <tr>
-                                            <td class="text-center" colspan="18">Không có dữ
-                                                liệu phù hợp
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td class="text-center" colspan="18">Không có dữ
+                                                    liệu phù hợp
+                                                </td>
+                                            </tr>
                                         </tbody>
                                         <tbody v-else="v-else">
-                                        <tr v-for="(px,index) in listKetChuyen">
+                                            <tr v-for="(px,index) in listKetChuyen">
 
-                                            <td class="text-center fixed-column fixedCol1" v-if="hienthibutton">
-                                                <input type="checkbox" v-model="lsDelete" :value="px.id">
-                                            </td>
-                                            <td class="text-center fixed-column fixedCol2">
-                                                {{ (currentPage - 1) * limit + index + 1 }}
-                                            </td>
-                                            <td class="text-center fixed-column fixedCol3"
-                                                style="text-align:center">
-                                                <a v-if="(px.tongThatBai+px.tongHopLoi > 0 )" href="#"
-                                                   title="Xem bản ghi lỗi" v-on:click.prevent="showInfo(px)">
-                                                    <i class="el-icon-view"></i>
-                                                </a>
-                                            </td>
-                                            <td>{{ px.tenTruong }}</td>
-                                            <td>{{ px.maTruong }}</td>
-                                            <td>{{ getCapHoc(px.capHoc) }}</td>
-                                            <td>{{ px.maDoiTac }}</td>
-                                            <td>{{ px.namHoc }}-{{ parseInt(px.namHoc) + 1 }}</td>
-                                            <td>
-                                                <p v-if="px.hocKy==1">Học kỳ I</p>
-                                                <p v-if="px.hocKy==2">Học kỳ II</p>
-                                                <p v-if="px.hocKy==3">Cả năm</p>
-                                            </td>
-                                            <td>
-                                                <p v-if="px.maGiaiDoan=='GK1'">Giữa kỳ I</p>
-                                                <p v-if="px.maGiaiDoan=='GK2'">Giữa kỳ II</p>
-                                                <p v-if="px.maGiaiDoan=='CK1'">Cuối kỳ I</p>
-                                                <p v-if="px.maGiaiDoan=='CK2'">Cuối kỳ II</p>
-                                            </td>
-                                            <td>
-                                                <p>{{ getBuocHienTai(px.buocHienTai) }}</p>
-                                            </td>
-                                            <td class="text-center">
-                                                <p>
-                                                    {{ px.timeStart }}
-                                                </p>
-                                            </td>
-                                            <td>
-                                                <p v-bind:style="{ backgroundColor: getBackGround(px.trangThai) }"
-                                                   class="bd-stt">{{ getTrangThaiDay(px.trangThai) }}</p>
-                                            </td>
-                                            <td class="text-center">
-                                                <p>{{ px.banGhiNhan }}</p>
-                                            </td>
-                                            <td class="text-center">
-                                                <p>{{ px.banGhiGui }}</p>
-                                            </td>
-                                            <td class="text-center">
-                                                <p>{{ px.tongThanhCong }}</p>
-                                            </td>
-                                            <td class="text-center">
-                                                <p>{{ px.tongThatBai + px.tongHopLoi }}</p>
-                                            </td>
-                                            <td>
-                                                <p v-if="px.error">{{ px.error }} / {{ px.errorDescription }}</p>
-                                            </td>
-                                        </tr>
+                                                <td class="text-center fixed-column fixedCol1" v-if="hienthibutton">
+                                                    <input type="checkbox" v-model="lsDelete" :value="px.id">
+                                                </td>
+                                                <td class="text-center fixed-column fixedCol2">
+                                                    {{ (currentPage - 1) * limit + index + 1 }}
+                                                </td>
+                                                <td class="text-center fixed-column fixedCol3"
+                                                    style="text-align:center">
+                                                    <a v-if="(px.tongThatBai+px.tongHopLoi > 0 )" href="#"
+                                                        title="Xem bản ghi lỗi" v-on:click.prevent="showInfo(px)">
+                                                        <i class="el-icon-view"></i>
+                                                    </a>
+                                                </td>
+                                                <td>{{ px.tenTruong }}</td>
+                                                <td>{{ px.maTruong }}</td>
+                                                <td>{{ getCapHoc(px.capHoc) }}</td>
+                                                <td>{{ px.maDoiTac }}</td>
+                                                <td>{{ px.namHoc }}-{{ parseInt(px.namHoc) + 1 }}</td>
+                                                <td>
+                                                    <p v-if="px.hocKy==1">Học kỳ I</p>
+                                                    <p v-if="px.hocKy==2">Học kỳ II</p>
+                                                    <p v-if="px.hocKy==3">Cả năm</p>
+                                                </td>
+                                                <td>
+                                                    <p v-if="px.maGiaiDoan=='GK1'">Giữa kỳ I</p>
+                                                    <p v-if="px.maGiaiDoan=='GK2'">Giữa kỳ II</p>
+                                                    <p v-if="px.maGiaiDoan=='CK1'">Cuối kỳ I</p>
+                                                    <p v-if="px.maGiaiDoan=='CK2'">Cuối kỳ II</p>
+                                                </td>
+                                                <td>
+                                                    <p>{{ getBuocHienTai(px.buocHienTai) }}</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p>
+                                                        {{ px.timeStart }}
+                                                    </p>
+                                                </td>
+                                                <td>
+                                                    <p v-bind:style="{ backgroundColor: getBackGround(px.trangThai) }"
+                                                        class="bd-stt">{{ getTrangThaiDay(px.trangThai) }}</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p>{{ px.banGhiNhan }}</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p>{{ px.banGhiGui }}</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p>{{ px.tongThanhCong }}</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p>{{ px.tongThatBai + px.tongHopLoi }}</p>
+                                                </td>
+                                                <td>
+                                                    <p v-if="px.error">{{ px.error }} / {{ px.errorDescription }}</p>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -553,7 +536,7 @@
                                 </Page>
                                 <!-- <template v-if="show_info"> -->
                                 <ThongTin :show="show_info" :item="idBanGhi" @success="onCreatedData($event)"
-                                          @close="show_info=false"></ThongTin>
+                                    @close="show_info=false"></ThongTin>
                                 <!-- </template> -->
                             </div>
                         </div>

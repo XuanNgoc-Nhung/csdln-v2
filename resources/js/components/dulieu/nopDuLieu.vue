@@ -9,8 +9,12 @@
                     <div class="table-name">Thông tin tìm kiếm</div>
                 </el-col>
                 <el-form ref="ruleForm">
-
-                    <el-col :sm="24" :lg="12">
+                    <el-col :sm="12" :lg="6">
+                        <label class="typo__label">Năm học <span class="red">*</span></label>
+                        <eselect style="width:100%" @change="chonNamHoc()" collapseTags v-model="namHoc"
+                            :placeholder="'Chọn'" filterable :data="list_nam_hoc" :fields="['name', 'id']" />
+                    </el-col>
+                    <el-col :sm="12" :md="12" :lg="6" v-if="namHoc<=2024">
                         <label class="typo__label">Đơn vị quản lý </label>
                         <eselect style="width:100%" @change="layLaiTruong" :disabled="thongtin.role>2" multiple
                             collapseTags v-model="donVi" :placeholder="'Chọn'" filterable :data="list_don_vi"
@@ -21,15 +25,10 @@
                         <eselect style="width:100%" @change="layLaiTruong" multiple collapseTags v-model="capHoc"
                             :placeholder="'Chọn'" filterable :data="danh_sach_cap_hoc_full" :fields="['name','id']" />
                     </el-col>
-                    <el-col :sm="12" :lg="6">
-                        <label class="typo__label">Năm học <span class="red">*</span></label>
-                        <eselect style="width:100%" collapseTags v-model="namHoc" :placeholder="'Chọn'" filterable
-                                 :data="list_nam_hoc" :fields="['name','id']" />
-                    </el-col>
-                    <el-col :sm="24" :lg="12">
+                    <el-col :sm="12" :md="12" :lg="6">
                         <label class="typo__label">Trường học</label>
                         <eselect style="width:100%" multiple collapseTags v-model="truongHoc" :placeholder="'Chọn'"
-                                 filterable :data="list_truong_hoc" :fields="['name','value']" />
+                            filterable :data="list_truong_hoc" :fields="['name','value']" />
                     </el-col>
 
 
@@ -119,22 +118,10 @@
                     </div>
                 </el-col>
                 <el-col :span="24">
-                    <el-table
-                            :data="danh_sach_du_lieu"
-                            border
-                            max-height="600"
-                            stripe
-                            style="width: 100%"
-                            empty-text="Không có dữ liệu"
-
-                    >
+                    <el-table :data="danh_sach_du_lieu" border max-height="600" stripe style="width: 100%"
+                        empty-text="Không có dữ liệu">
                         <!-- Chọn tất cả Column -->
-                        <el-table-column
-                                label=""
-                                width="50"
-                                align="center"
-                                fixed="left"
-                        >
+                        <el-table-column label="" width="50" align="center" fixed="left">
                             <template #header>
                                 <input type="checkbox" v-model="checkAll" @change="chonTatCa" />
                             </template>
@@ -145,12 +132,7 @@
                         </el-table-column>
 
                         <!-- STT Column -->
-                        <el-table-column
-                                label="STT"
-                                :width="start > 9999 ? 70 : 60"
-                                align="center"
-
-                        >
+                        <el-table-column label="STT" :width="start > 9999 ? 70 : 60" align="center">
 
                             <template #default="{ $index }">
                                 <p>{{ (currentPage - 1) * limit + $index + 1 }}</p>
@@ -158,26 +140,17 @@
                         </el-table-column>
 
                         <!-- Thao tác Column -->
-                        <el-table-column
-                                label="Thao tác"
-                                :width="columnWidths.thaoTac"
-                                fixed="right"
-                                align="center"
-                        >
+                        <el-table-column label="Thao tác" :width="columnWidths.thaoTac" fixed="right" align="center">
                             <template #default="{ row }">
                                 <el-tooltip v-if="row.status == 1" content="Khóa" placement="left">
-                                    <i
-                                            :disabled="thongtin.role < 4"
-                                            @click.prevent="thayDoiTrangThaiTungBanGhi(row.maTruongHoc, 1)"
-                                            class="el-icon-lock"
-                                    ></i>
+                                    <i :disabled="thongtin.role < 4"
+                                        @click.prevent="thayDoiTrangThaiTungBanGhi(row.maTruongHoc, 1)"
+                                        class="el-icon-lock"></i>
                                 </el-tooltip>
                                 <el-tooltip v-else content="Mở khóa" placement="left">
-                                    <i
-                                            :disabled="thongtin.role < 4"
-                                            @click.prevent="thayDoiTrangThaiTungBanGhi(row.maTruongHoc, 2)"
-                                            class="el-icon-unlock"
-                                    ></i>
+                                    <i :disabled="thongtin.role < 4"
+                                        @click.prevent="thayDoiTrangThaiTungBanGhi(row.maTruongHoc, 2)"
+                                        class="el-icon-unlock"></i>
                                 </el-tooltip>
                                 <el-tooltip content="Chỉnh sửa" placement="right">
                                     <i @click.prevent="chinhSuaNgay(row)" class="el-icon-edit"></i>
@@ -186,29 +159,18 @@
                         </el-table-column>
 
                         <!-- Các cột còn lại -->
-                        <el-table-column
-                                label="Đơn vị quản lý"
-                                :min-width="columnWidths.donVi"
-                        >
+                        <el-table-column label="Đơn vị quản lý" :min-width="columnWidths.donVi">
                             <template #default="{ row }">
                                 <p>{{ row.tenDonVi }}</p>
                             </template>
                         </el-table-column>
-                        <el-table-column
-
-                                label="Trường học"
-                                :min-width="columnWidths.truongHoc"
-                        >
+                        <el-table-column label="Trường học" :min-width="columnWidths.truongHoc">
                             <template #default="{ row }">
                                 <p>{{ row.tenTruongHoc }}</p>
                             </template>
                         </el-table-column>
 
-                        <el-table-column
-                                label="Mã trường"
-                                :min-width="columnWidths.maTruong"
-
-                        >
+                        <el-table-column label="Mã trường" :min-width="columnWidths.maTruong">
                             <template #default="{ row }">
                                 <p>{{ row.maTruongHoc }}</p>
                             </template>
@@ -216,31 +178,19 @@
 
 
 
-                        <el-table-column
-                                label="Ngày bắt đầu"
-                                :min-width="columnWidths.ngayBatDau"
-                                align="center"
-                        >
+                        <el-table-column label="Ngày bắt đầu" :min-width="columnWidths.ngayBatDau" align="center">
                             <template #default="{ row }">
                                 <p>{{ row.tuNgay }}</p>
                             </template>
                         </el-table-column>
 
-                        <el-table-column
-                                label="Ngày kết thúc"
-                                :min-width="columnWidths.ngayKetThuc"
-                                align="center"
-                        >
+                        <el-table-column label="Ngày kết thúc" :min-width="columnWidths.ngayKetThuc" align="center">
                             <template #default="{ row }">
                                 <p>{{ row.denNgay }}</p>
                             </template>
                         </el-table-column>
 
-                        <el-table-column
-                                label="Trạng thái"
-                                :min-width="columnWidths.trangThai"
-                                align="center"
-                        >
+                        <el-table-column label="Trạng thái" :min-width="columnWidths.trangThai" align="center">
                             <template #default="{ row }">
                                 <p :class="getClass(row.status)">
                                     {{ row.status == 1 ? 'Đang hoạt động' : 'Ngừng hoạt động' }}
@@ -275,7 +225,8 @@
                     <el-row :gutter="24">
                         <el-col :span="24" v-if="typeUpdate==3||typeUpdate==4">
                             <h5 v-if="typeUpdate!=4">Hệ thống sẽ thực hiện {{ getType(typeUpdate) }} dữ liệu của <span
-                                    v-if="danh_sach_truong_da_chon.length>1">{{ danh_sach_truong_da_chon.length }}</span>
+                                    v-if="danh_sach_truong_da_chon.length>1">{{ danh_sach_truong_da_chon.length
+                                    }}</span>
                                 trường
                                 sau.</h5>
                             <h5 v-else>Hệ thống sẽ thực hiện chỉnh sửa dữ liệu của {{ total_rows }} trường đã tìm thấy.
@@ -290,33 +241,28 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <el-form-item prop="tuNgay">
-                                            <el-date-picker
-                                                    style="width: 100%"
-                                                    v-model="dataFormUpdate.tuNgay"
-                                                    type="daterange"
-                                                    align="center"
-                                                    format="dd/MM/yyyy"
-                                                    value-format="dd/MM/yyyy"
-                                                    start-placeholder="Từ ngày"
-                                                    end-placeholder="Đến ngày">
+                                            <el-date-picker style="width: 100%" v-model="dataFormUpdate.tuNgay"
+                                                type="daterange" align="center" format="dd/MM/yyyy"
+                                                value-format="dd/MM/yyyy" start-placeholder="Từ ngày"
+                                                end-placeholder="Đến ngày">
                                             </el-date-picker>
                                         </el-form-item>
-<!--                                        <div class="input-group input-daterange">-->
-<!--                                            <el-form-item prop="tuNgay">-->
-<!--                                                <date-picker :lang="lang" v-model="dataFormUpdate.tuNgay"-->
-<!--                                                             placeholder="Chọn ngày" ref="tuNgay" valueType="format"-->
-<!--                                                             value-type="DD/MM/YYYY" format="DD/MM/YYYY" @change="chonNgayBatDau">-->
-<!--                                                </date-picker>-->
-<!--                                            </el-form-item>-->
-<!--                                            <div class="input-to">đến</div>-->
+                                        <!--                                        <div class="input-group input-daterange">-->
+                                        <!--                                            <el-form-item prop="tuNgay">-->
+                                        <!--                                                <date-picker :lang="lang" v-model="dataFormUpdate.tuNgay"-->
+                                        <!--                                                             placeholder="Chọn ngày" ref="tuNgay" valueType="format"-->
+                                        <!--                                                             value-type="DD/MM/YYYY" format="DD/MM/YYYY" @change="chonNgayBatDau">-->
+                                        <!--                                                </date-picker>-->
+                                        <!--                                            </el-form-item>-->
+                                        <!--                                            <div class="input-to">đến</div>-->
 
-<!--                                            <el-form-item prop="denNgay">-->
-<!--                                                <date-picker :lang="lang" ref="denNgay" v-model="dataFormUpdate.denNgay"-->
-<!--                                                             @change="check_confirm_come_back = true" placeholder="Chọn ngày"-->
-<!--                                                             valueType="format" value-type="DD/MM/YYYY" format="DD/MM/YYYY">-->
-<!--                                                </date-picker>-->
-<!--                                            </el-form-item>-->
-<!--                                        </div>-->
+                                        <!--                                            <el-form-item prop="denNgay">-->
+                                        <!--                                                <date-picker :lang="lang" ref="denNgay" v-model="dataFormUpdate.denNgay"-->
+                                        <!--                                                             @change="check_confirm_come_back = true" placeholder="Chọn ngày"-->
+                                        <!--                                                             valueType="format" value-type="DD/MM/YYYY" format="DD/MM/YYYY">-->
+                                        <!--                                                </date-picker>-->
+                                        <!--                                            </el-form-item>-->
+                                        <!--                                        </div>-->
                                     </div>
                                 </div>
                             </div>
@@ -347,11 +293,13 @@
                         </el-col>
                         <el-col :span="24" v-if="typeUpdate!=4" class="">
                             <span class="table-name">
-                                <h5 v-if="typeUpdate==2||typeUpdate==1">Hệ thống sẽ thực hiện {{ getType(typeUpdate) }} dữ liệu của
-                                    <span
-                                        v-if="danh_sach_truong_da_chon.length>1">{{ danh_sach_truong_da_chon.length }}</span>
+                                <h5 v-if="typeUpdate==2||typeUpdate==1">Hệ thống sẽ thực hiện {{ getType(typeUpdate) }}
+                                    dữ liệu của
+                                    <span v-if="danh_sach_truong_da_chon.length>1">{{ danh_sach_truong_da_chon.length
+                                        }}</span>
                                     trường
-                                    sau.</h5>
+                                    sau.
+                                </h5>
                                 <!-- <h5 v-else>Hệ thống sẽ thực hiện chỉnh sửa dữ liệu của {{ total_rows }} trường đã tìm
                                     thấy.
                                 </h5> -->
@@ -402,31 +350,31 @@
                 </span>
             </el-dialog>
             <!-- Thêm -->
-            <el-dialog top="80px" title="Thêm mới cấu hình lịch đồng bộ cấp trường" :visible.sync="modal_confirm_add" width="90%"
-                :close-on-click-modal="false" :close-on-press-escape="false" :before-close="handleClose">
+            <el-dialog top="80px" title="Thêm mới cấu hình lịch đồng bộ cấp trường" :visible.sync="modal_confirm_add"
+                width="90%" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="handleClose">
                 <el-form :model='dataFormAdd' :rules="rules" ref="ruleForm">
                     <el-row :gutter="24" class="">
-                        <el-col :sm="24"  :md="16" :lg="12">
+                        <el-col :sm="24" :md="16" :lg="12">
                             <label>Đơn vị quản lý </label>
                             <eselect style="width:100%" @change="layLaiTruongAdd" :disabled="thongtin.role>2" multiple
                                 collapseTags v-model="donViAdd" :placeholder="'Chọn'" filterable :data="list_don_vi"
                                 :fields="['tenDonVi','maDonVi']" />
                         </el-col>
-                        <el-col :sm="12"  :md="8" :lg="6">
+                        <el-col :sm="12" :md="8" :lg="6">
                             <label>Cấp học </label>
                             <eselect style="width:100%" @change="layLaiTruongAdd" multiple collapseTags
                                 v-model="capHocAdd" :placeholder="'Chọn'" filterable :data="danh_sach_cap_hoc_full"
                                 :fields="['name','id']" />
                         </el-col>
-                        <el-col :sm="12"  :md="8" :lg="6">
+                        <el-col :sm="12" :md="8" :lg="6">
                             <label>Năm học <span style="color:#DC0101">*</span></label>
                             <el-form-item prop="namHoc">
                                 <eselect style="width:100%" collapseTags v-model="dataFormAdd.namHoc"
-                                         @change="check_confirm_come_back = true" :placeholder="'Chọn'" filterable
-                                         ref="namHoc" :data="list_nam_hoc" :fields="['name','id']" />
+                                    @change="check_confirm_come_back = true" :placeholder="'Chọn'" filterable
+                                    ref="namHoc" :data="list_nam_hoc" :fields="['name','id']" />
                             </el-form-item>
                         </el-col>
-                        <el-col :sm="24"  :md="16" :lg="12">
+                        <el-col :sm="24" :md="16" :lg="12">
                             <label>Trường học <span class="red">*</span></label>
                             <el-form-item prop="truongHocAdd">
                                 <eselect style="width:100%" ref="truongHocAdd" multiple collapseTags
@@ -436,33 +384,27 @@
                             </el-form-item>
                         </el-col>
 
-                        <el-col :sm="24"  :md="16" :lg="12">
+                        <el-col :sm="24" :md="16" :lg="12">
                             <label>Thời hạn nộp: <span style="color:#DC0101">*</span></label>
                             <div>
 
-<!--                                <el-form-item prop="tuNgayAdd">-->
-<!--                                    <date-picker ref="tuNgayAdd" :lang="lang" v-model="dataFormAdd.tuNgayAdd"-->
-<!--                                        placeholder="Chọn ngày" valueType="format" value-type="DD/MM/YYYY"-->
-<!--                                        format="DD/MM/YYYY" @change="chonNgayBatDauAdd">-->
-<!--                                    </date-picker>-->
-<!--                                </el-form-item>-->
-<!--                                <div class="input-to">đến</div>-->
-<!--                                <el-form-item prop="denNgayAdd">-->
-<!--                                    <date-picker ref="denNgayAdd" :lang="lang" v-model="dataFormAdd.denNgayAdd"-->
-<!--                                        @change="check_confirm_come_back = true" placeholder="Chọn ngày"-->
-<!--                                        valueType="format" value-type="DD/MM/YYYY" format="DD/MM/YYYY">-->
-<!--                                    </date-picker>-->
-<!--                                </el-form-item>-->
+                                <!--                                <el-form-item prop="tuNgayAdd">-->
+                                <!--                                    <date-picker ref="tuNgayAdd" :lang="lang" v-model="dataFormAdd.tuNgayAdd"-->
+                                <!--                                        placeholder="Chọn ngày" valueType="format" value-type="DD/MM/YYYY"-->
+                                <!--                                        format="DD/MM/YYYY" @change="chonNgayBatDauAdd">-->
+                                <!--                                    </date-picker>-->
+                                <!--                                </el-form-item>-->
+                                <!--                                <div class="input-to">đến</div>-->
+                                <!--                                <el-form-item prop="denNgayAdd">-->
+                                <!--                                    <date-picker ref="denNgayAdd" :lang="lang" v-model="dataFormAdd.denNgayAdd"-->
+                                <!--                                        @change="check_confirm_come_back = true" placeholder="Chọn ngày"-->
+                                <!--                                        valueType="format" value-type="DD/MM/YYYY" format="DD/MM/YYYY">-->
+                                <!--                                    </date-picker>-->
+                                <!--                                </el-form-item>-->
                                 <el-form-item prop="tuNgayAdd">
-                                    <el-date-picker
-                                            style="width: 100%"
-                                            v-model="dataFormAdd.tuNgayAdd"
-                                            type="daterange"
-                                            align="center"
-                                            format="dd/MM/yyyy"
-                                            value-format="dd/MM/yyyy"
-                                            start-placeholder="Từ ngày"
-                                            end-placeholder="Đến ngày">
+                                    <el-date-picker style="width: 100%" v-model="dataFormAdd.tuNgayAdd" type="daterange"
+                                        align="center" format="dd/MM/yyyy" value-format="dd/MM/yyyy"
+                                        start-placeholder="Từ ngày" end-placeholder="Đến ngày">
                                     </el-date-picker>
                                 </el-form-item>
                             </div>
@@ -1252,7 +1194,6 @@
                 this.getData();
             },
             layLaiTruong() {
-                this.list_truong_hoc = [];
                 this.truongHoc = [];
                 this.getTruongHoc();
             },

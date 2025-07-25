@@ -7,19 +7,17 @@
                     <el-col :span="24">
                         <div class="table-name">Thông tin tìm kiếm</div>
                     </el-col>
+                    <el-col :sm="12" :lg="6">
+                        <label class="typo__label">Năm học</label>
+                        <eselect style="width:100%" collapseTags v-model="namHoc" @change="chonNamHoc" :placeholder="'Chọn'" filterable
+                                 :data="list_nam_hoc" :fields="['name','id']" />    
+                    </el-col>
                     <el-col :sm="8" :lg="6">
                         <label>Loại đơn vị</label>
-                        <!-- <el-select v-model="loai_don_vi" multiple filterable collapse-tags @change="chonLoaiDonVi"
-                                placeholder="Chọn" no-data-text="Không có dữ liệu" no-match-text="Không có dữ liệu phù hợp">
-                                <el-option v-for="item in list_loai_don_vi" :key="item.value" :label="item.name"
-                                    :value="item.value">
-                                </el-option>
-                            </el-select> -->
-
                         <eselect style="width:100%" multiple collapseTags v-model="loai_don_vi" @change="chonLoaiDonVi"
                             :placeholder="'Chọn'" filterable :data="list_loai_don_vi" :fields="['name','value']" />
                     </el-col>
-                    <el-col :sm="16" :lg="12">
+                    <el-col :sm="16" :lg="12" v-if="namHoc<=2024">
                         <label class="typo__label p-3">Đơn vị quản lý</label>
                         <eselect style="width:100%" multiple collapseTags v-model="ma_don_vi" @change="chonDonVi"
                             :placeholder="'Chọn'" filterable :data="list_don_vi" :fields="['name','value']" />
@@ -262,17 +260,30 @@
                 }],
 
                 loai_don_vi: [],
+                namHoc: 0,
+                list_nam_hoc: constant.LIST_YEARS_FULL,
             }
         },
         watch: {},
         mounted: function () {
             this.thongtin = JSON.parse(window.userInfo);
+            this.namHoc = this.thongtin.namHocHienTai;
             this.getDonVi();
             this.getTruongHoc();
             this.getData();
 
         },
         methods: {
+            chonNamHoc() {
+                this.list_truong_hoc = [];
+                if(this.namHoc<=2024){
+                    this.loai_don_vi = [];
+                }else{
+                    this.loai_don_vi = ['3'];
+                }
+                this.getTruongHoc();
+                this.getData();
+            },
             chonLoaiDonVi() {
                 console.log("chọn loại đơn vị:");
                 this.list_truong_hoc = [];
